@@ -178,17 +178,7 @@ Day-4/
 
 ---
 
-## Screenshots
 
-Add screenshots of:
-
-1. Conditional Statement Programs
-2. Loop Programs
-3. Logic Building Programs
-4. Number Analysis Tool Execution
-5. Menu Driven Application Execution
-
----
 
 ## Outcome
 
