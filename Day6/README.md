@@ -1,6 +1,6 @@
-# Student Record Management System (Updated Version)
+#  Student Record Management System (Updated Version)
 
-## 📌 Project Description
+##  Project Description
 
 This project is an **updated version** of the Student Record Management System that I built previously.
 
@@ -8,7 +8,7 @@ The original version allowed users to manage student records using Python lists 
 
 ---
 
-# 🚀 Previous Student Record Management System
+#  Previous Student Record Management System
 
 The previous version included the following features:
 
@@ -25,7 +25,7 @@ All student records were stored in memory only. When the program was closed, all
 
 ---
 
-# ✨ Updated Features
+#  Updated Features
 
 The following improvements have been added:
 
@@ -39,7 +39,7 @@ Now, student records remain available even after restarting the program.
 
 ---
 
-# 🛠️ Technologies Used
+#  Technologies Used
 
 * Python 3
 * JSON
@@ -48,7 +48,7 @@ Now, student records remain available even after restarting the program.
 
 ---
 
-# 📁 Project Structure
+#  Project Structure
 
 ```text
 Updated Student Record Management System/
@@ -60,7 +60,7 @@ Updated Student Record Management System/
 
 ---
 
-# ▶️ How to Run
+#  How to Run
 
 1. Make sure Python 3 is installed.
 2. Open the project folder.
@@ -78,7 +78,7 @@ python student_record_management_system.py
 
 ---
 
-# 📋 Menu Options
+#  Menu Options
 
 ```text
 ===== Student Record System =====
@@ -93,7 +93,7 @@ python student_record_management_system.py
 
 ---
 
-# 📄 Sample JSON Data
+#  Sample JSON Data
 
 ```json
 [
@@ -108,7 +108,7 @@ python student_record_management_system.py
 
 ---
 
-# 🎯 Learning Outcomes
+#  Learning Outcomes
 
 This project helped me practice:
 
