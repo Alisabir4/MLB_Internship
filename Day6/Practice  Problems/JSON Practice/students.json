@@ -1,0 +1,15 @@
+[
+    {
+        "name": "Ali",
+        "age": 22,
+        "course": "Python",
+        "cgpa": 3.46,
+        "Course": "Django"
+    },
+    {
+        "name": "honey",
+        "age": "21",
+        "course": "Django",
+        "cgpa": 3.55
+    }
+]
