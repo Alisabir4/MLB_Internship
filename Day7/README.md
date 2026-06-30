@@ -45,11 +45,9 @@ The **Library Management System** is a console-based Python application built us
 ```
 Library_Management_System/
 │
-├── library.py          # Main application
-├── books.json          # Stores book records
-├── README.md           # Project documentation
-└── Progress_Report.md  # Project progress
-```
+├── Library_Management_System.py          # Main application
+├── books.json                            # Stores book records
+
 
 ---
 
