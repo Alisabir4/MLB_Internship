@@ -1,0 +1,12 @@
+[
+    {
+        "title": "python",
+        "author": "Ali",
+        "available": false
+    },
+    {
+        "title": "AI",
+        "author": "Honey",
+        "available": true
+    }
+]
