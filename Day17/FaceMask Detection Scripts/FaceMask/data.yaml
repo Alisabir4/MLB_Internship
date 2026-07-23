@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 3
+names: ['\', 'face-mask', 'no face mask']
+
+roboflow:
+  workspace: alis-workspace-20nni
+  project: face-mask-detection-8rwst-fi6el
+  version: dataset
+  license: Public Domain
+  url: https://universe.roboflow.com/alis-workspace-20nni/face-mask-detection-8rwst-fi6el/dataset/dataset
