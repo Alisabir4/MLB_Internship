@@ -3,9 +3,9 @@ import numpy as np
 import gradio as gr
 import tempfile
 
-# -----------------------------
+
 # Image Processing Function
-# -----------------------------
+
 def process_image(image, operation):
     img = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
@@ -109,9 +109,7 @@ def process_image(image, operation):
     return display, temp_file.name
 
 
-# -----------------------------
 # Gradio Interface
-# -----------------------------
 demo = gr.Interface(
     fn=process_image,
     inputs=[
