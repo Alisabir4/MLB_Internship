@@ -1,0 +1,21 @@
+REPORT PAGE
+Type: Report
+Nome
+Dale
+Relerence No DOC-2026-001
+Thus Is 4 samole documenl Imaoe cedled ll
+comouler vsion dalasel testng I contains
+pnnled text. Imm felds.and loble-hke breas
+The pupose Is I0 lest document delecton.
+OCR preprocessing: skew handng: Itghun?
+robustness. end blur Iolerance
+Item
+Oty
+Amount
+Paper
+510
+Pnnt
+525
+Service
+$40
+Sronature

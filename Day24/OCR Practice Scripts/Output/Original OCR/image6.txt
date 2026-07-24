@@ -1,0 +1,21 @@
+REPORT PAGE
+Type: Report
+Name:
+Date:
+Reference No: DOC-2026-001
+This is & sample document image created for
+computer vision dataset testing It contains
+printed text, form fields, and table-Iike areas
+The purpose iS t0 test document detection;
+OCR preprocessing, skew handling. lighting
+robustness and blur tolerance,
+Item
+Amount
+Paper
+S10
+Print
+525
+Service
+540
+Signature:
+0ly
