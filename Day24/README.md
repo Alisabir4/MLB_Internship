@@ -5,6 +5,41 @@
 This project demonstrates Optical Character Recognition (OCR) using the EasyOCR library. The application extracts text from images and displays the recognized text. It also enhances the image before OCR to improve recognition accuracy.
 
 ---
+## Explanation
+
+### What is OCR?
+
+Optical Character Recognition (OCR) is a technology that enables computers to detect and extract text from images, scanned documents, receipts, invoices, books, and other visual sources. It converts printed or handwritten text into editable and searchable digital text.
+
+---
+
+### Which OCR Library Did I Use and Why?
+
+This project uses **EasyOCR** because it is easy to set up, supports multiple languages, and provides good accuracy for recognizing text from various types of images. It works well with Python and performs effectively on printed documents, signboards, receipts, and book pages without requiring complex configuration.
+
+---
+
+### What Preprocessing Techniques Improved the Results?
+
+The following image preprocessing techniques were applied before OCR to improve text recognition:
+
+- **Grayscale Conversion:** Simplified the image by removing color information.
+- **Histogram Equalization:** Enhanced image contrast, making text more visible.
+- **Image Enhancement:** Improved the clarity of characters, especially in low-contrast images.
+
+These preprocessing steps increased OCR accuracy, particularly for images with poor lighting or faint text.
+
+---
+
+### Challenges Faced While Extracting Text
+
+Some challenges encountered during the project included:
+
+- Low-quality or blurry images reduced OCR accuracy.
+- Handwritten text was more difficult to recognize than printed text.
+- Small or stylized fonts were sometimes recognized incorrectly.
+- Images with uneven lighting or shadows affected text extraction.
+- Initial setup required downloading EasyOCR models, and incorrect image file paths caused loading errors during testing.
 
 ## Topics Covered
 
