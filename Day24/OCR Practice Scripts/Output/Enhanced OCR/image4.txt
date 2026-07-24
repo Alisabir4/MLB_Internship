@@ -1,0 +1,21 @@
+RECEIPT DOCUMENT
+Type: Receipt
+Name:
+Data:
+ReternceNo: DOC-2026-001
+Thie (5 a sample document image created for
+compuiier vision dataset testing: It contains
+printediexy tonm fields, and table-Iike areas_
+Ihe purpose is t0 test document detection 
+OCR paprocessing; skew handling, lighting
+robusitess;and blur tolerance:
+Iten
+Qty
+Amount
+Papet
+510
+Prnii
+525
+Senicea
+840
+Signaturad

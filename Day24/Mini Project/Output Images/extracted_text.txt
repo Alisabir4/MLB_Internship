@@ -1,0 +1,23 @@
+INVOICE SAMPLE
+Type: Receipt
+Name:
+Date:
+Reference No: DOC-2026-001
+This is a sample document image created for
+computer vision dataset testing: It contains
+printed text; form fields
+and table-like areas_
+The purpose is to test document detection,
+OCR preprocessing, skew handling; lighting
+robustness, and blur tolerance.
+Item
+Qty
+Amount
+Paper
+S10
+Print
+5
+S25
+Service
+S40
+Signature:
