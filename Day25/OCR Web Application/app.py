@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📄 Document OCR Web Application")
+st.title("Document OCR Web Application")
 
 st.write("Upload a document image and extract text using EasyOCR.")
 

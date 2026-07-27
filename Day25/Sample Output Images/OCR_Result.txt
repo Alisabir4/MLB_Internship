@@ -1,0 +1,25 @@
+INVOICE SAMPLE
+Type: Receipt
+Name
+Date
+Relerence No
+DOC-2026-001
+This IS a sample document Image created {or
+computer viSion dataset testing
+It contains
+printed text, torm fields_
+and table-Iike areas
+The purpose IS t test document detection.
+OCR preprocessing. skew handling. lighting
+robustness. and blur tolerance
+Item
+Amount
+Paper
+S10
+Print
+5
+S25
+Service
+S40
+Signature
+Qty
