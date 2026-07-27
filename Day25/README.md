@@ -122,14 +122,7 @@ The application was tested on at least **15 different images**, including:
 * Enable batch processing for multiple document images.
 * Preserve document layout during text extraction.
 
----
 
-## GitHub Repository
-
-**Repository Link:**
-(Add your GitHub repository link here)
-
----
 
 ## ngrok Public URL
 
