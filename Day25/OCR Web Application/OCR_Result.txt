@@ -1,15 +1,2 @@
-APPUCATION FORM
-Name:
-Azeem
-Naseer
-CNIC:
-42201-1234567-8
-Email:
-azcemOemail.com
-Phone:
-+92-300_1234567
-City:
-Lahoro, Pakistan
-Course:
-N
-Engineering
+7+7
+LAtl

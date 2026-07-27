@@ -2,15 +2,20 @@ import cv2
 
 def preprocess_image(image):
 
+    # Convert to grayscale
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    thresh = cv2.threshold(
+    # Remove noise
+    gray = cv2.GaussianBlur(gray, (5, 5), 0)
+
+    # Adaptive threshold
+    processed = cv2.adaptiveThreshold(
         gray,
-        0,
         255,
-        cv2.THRESH_BINARY + cv2.THRESH_OTSU
-    )[1]
+        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv2.THRESH_BINARY,
+        11,
+        2
+    )
 
-    denoise = cv2.medianBlur(thresh, 3)
-
-    return denoise
+    return processed
