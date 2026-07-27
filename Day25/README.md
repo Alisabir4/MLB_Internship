@@ -134,6 +134,6 @@ The application was tested on at least **15 different images**, including:
 ## ngrok Public URL
 
 **Public URL:**
-(Add your active ngrok URL here)
+(https://shawl-tray-amiss.ngrok-free.dev/)
 
 
