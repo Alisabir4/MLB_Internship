@@ -33,11 +33,17 @@ if uploaded_file is not None:
         cv2.COLOR_RGB2BGR
     )
 
+    # Create grayscale image for display
+    gray = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
+
+    # Preprocess image for OCR
     processed = preprocess_image(image_np)
 
+    # Display grayscale image
     st.subheader("Processed Image")
-    st.image(processed, use_container_width=True)
+    st.image(gray, use_container_width=True)
 
+    # OCR uses the processed image
     extracted_text = extract_text(processed)
 
     st.subheader("Extracted Text")

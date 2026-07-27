@@ -8,7 +8,7 @@ def preprocess_image(image):
     # Remove noise
     gray = cv2.GaussianBlur(gray, (5, 5), 0)
 
-    # Adaptive threshold
+    # Adaptive Thresholding
     processed = cv2.adaptiveThreshold(
         gray,
         255,
