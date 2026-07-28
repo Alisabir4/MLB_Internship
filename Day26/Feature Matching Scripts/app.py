@@ -19,14 +19,14 @@ col1, col2 = st.columns(2)
 with col1:
     image1 = st.file_uploader(
         "Upload First Image",
-        type=["jpg","jpeg","png"],
+        type=["jpg", "jpeg", "png"],
         key="img1"
     )
 
 with col2:
     image2 = st.file_uploader(
         "Upload Second Image",
-        type=["jpg","jpeg","png"],
+        type=["jpg", "jpeg", "png"],
         key="img2"
     )
 
@@ -40,12 +40,25 @@ if image1 and image2:
 
     output, kp1, kp2, matches = match_features(img1, img2)
 
+    # Display matched image
     st.image(
         cv2.cvtColor(output, cv2.COLOR_BGR2RGB),
         caption="Matched Features",
         use_container_width=True
     )
 
-    st.success(f"Keypoints in Image 1 : {kp1}")
-    st.success(f"Keypoints in Image 2 : {kp2}")
-    st.success(f"Good Matches : {matches}")
+    # Convert image to PNG
+    _, buffer = cv2.imencode(".png", output)
+
+    # Download button
+    st.download_button(
+        label="📥 Download Matched Image",
+        data=buffer.tobytes(),
+        file_name="matched_features.png",
+        mime="image/png"
+    )
+
+    # Display results
+    st.success(f"Keypoints in Image 1: {kp1}")
+    st.success(f"Keypoints in Image 2: {kp2}")
+    st.success(f"Good Matches: {matches}")
