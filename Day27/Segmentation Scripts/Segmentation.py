@@ -14,14 +14,12 @@ if image is None:
 # Convert to grayscale
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-# -----------------------------
 # 1. Binary Thresholding
-# -----------------------------
+
 _, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
 
-# -----------------------------
 # 2. Adaptive Thresholding
-# -----------------------------
+
 adaptive = cv2.adaptiveThreshold(
     gray,
     255,
@@ -31,9 +29,7 @@ adaptive = cv2.adaptiveThreshold(
     2
 )
 
-# -----------------------------
 # 3. Otsu Thresholding
-# -----------------------------
 _, otsu = cv2.threshold(
     gray,
     0,
@@ -41,23 +37,21 @@ _, otsu = cv2.threshold(
     cv2.THRESH_BINARY + cv2.THRESH_OTSU
 )
 
-# -----------------------------
 # 4. Foreground/Background Segmentation
-# -----------------------------
+
 foreground = cv2.bitwise_and(image, image, mask=otsu)
 
-# -----------------------------
 # Save Outputs
-# -----------------------------
+
 cv2.imwrite("outputs/grayscale.jpg", gray)
 cv2.imwrite("outputs/binary_threshold.jpg", binary)
 cv2.imwrite("outputs/adaptive_threshold.jpg", adaptive)
 cv2.imwrite("outputs/otsu_threshold.jpg", otsu)
 cv2.imwrite("outputs/foreground_segmentation.jpg", foreground)
 
-# -----------------------------
+
 # Display Results
-# -----------------------------
+
 cv2.imshow("Original Image", image)
 cv2.imshow("Grayscale", gray)
 cv2.imshow("Binary Threshold", binary)
