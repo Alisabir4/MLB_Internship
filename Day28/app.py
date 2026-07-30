@@ -5,9 +5,8 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 
-# -------------------------------
 # Page Configuration
-# -------------------------------
+
 st.set_page_config(
     page_title="Smart Object Detection",
     page_icon="🎯",
@@ -17,18 +16,16 @@ st.set_page_config(
 st.title("🎯 Smart Object Detection Application")
 st.markdown("Detect objects in **Images** and **Videos** using a pre-trained **YOLO11n** model.")
 
-# -------------------------------
 # Load YOLO Model
-# -------------------------------
+
 @st.cache_resource
 def load_model():
     return YOLO("yolo11n.pt")
 
 model = load_model()
 
-# -------------------------------
 # Sidebar
-# -------------------------------
+
 st.sidebar.header("Settings")
 
 input_type = st.sidebar.radio(
@@ -47,9 +44,8 @@ confidence = st.sidebar.slider(
 os.makedirs("outputs/images", exist_ok=True)
 os.makedirs("outputs/videos", exist_ok=True)
 
-# =====================================================
 # IMAGE DETECTION
-# =====================================================
+
 if input_type == "Image":
 
     uploaded_image = st.file_uploader(
@@ -142,9 +138,8 @@ if input_type == "Image":
 
                 os.unlink(temp_file.name)
 
-# =====================================================
+
 # VIDEO DETECTION
-# =====================================================
 else:
 
     uploaded_video = st.file_uploader(
