@@ -1,7 +1,7 @@
 import os
 from ultralytics import YOLO
 
-MODEL = r"runs/detect/RoadSign_Project/RoadSign_Model/weights/best.pt"
+MODEL = "best.pt"
 
 TEST_IMAGES = "dataset/test/images"
 
