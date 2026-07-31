@@ -1,7 +1,7 @@
 import os
 from ultralytics import YOLO
 
-MODEL = "best.pt"
+MODEL = r"best.pt"
 
 TEST_IMAGES = "dataset/test/images"
 

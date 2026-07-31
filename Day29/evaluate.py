@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import os
 
-MODEL = "best.pt"
+MODEL = r"best.pt"
 
 if not os.path.exists(MODEL):
     print("best.pt not found!")
