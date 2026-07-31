@@ -20,31 +20,19 @@ st.write("Upload an image or video to detect road signs using a custom YOLOv8 mo
 
 # Load Model
 
-import streamlit as st
 from pathlib import Path
-import os
+from ultralytics import YOLO
+import streamlit as st
 
 BASE_DIR = Path(__file__).resolve().parent
-
-st.write("Current Working Directory:")
-st.code(os.getcwd())
-
-st.write("App Directory:")
-st.code(str(BASE_DIR))
-
-st.write("Files in App Directory:")
-st.write(os.listdir(BASE_DIR))
-
 MODEL_PATH = BASE_DIR / "best.pt"
 
-st.write("Model Path:")
-st.code(str(MODEL_PATH))
-
-st.write("Model Exists?")
-st.write(MODEL_PATH.exists())
-
-st.stop()
-
+try:
+    model = YOLO(str(MODEL_PATH))
+    st.success("✅ Model loaded successfully!")
+except Exception as e:
+    st.exception(e)
+    st.stop()
 
 # Sidebar
 
