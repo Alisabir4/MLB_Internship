@@ -1,7 +1,7 @@
 import os
 from ultralytics import YOLO
 
-MODEL = r"best.pt"
+MODEL = r"D:\python\MLB_Internship\Day29\best.pt"
 
 TEST_IMAGES = "dataset/test/images"
 
