@@ -33,11 +33,11 @@ def main():
 
     print("\nBest Model:")
 
-    print("runs/detect/RoadSign_Project/RoadSign_Model/weights/best.pt")
+    print("RoadSign_Project/RoadSign_Model/weights/best.pt")
 
     print("\nLast Model:")
 
-    print("runs/detect/RoadSign_Project/RoadSign_Model/weights/last.pt")
+    print("RoadSign_Project/RoadSign_Model/weights/last.pt")
 
 
 if __name__ == "__main__":

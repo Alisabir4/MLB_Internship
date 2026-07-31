@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import os
 
-MODEL = r"runs/detect/RoadSign_Project/RoadSign_Model/weights/best.pt"
+MODEL = "best.pt"
 
 if not os.path.exists(MODEL):
     print("best.pt not found!")
