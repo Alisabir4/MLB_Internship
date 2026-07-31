@@ -20,7 +20,7 @@ st.write("Upload an image or video to detect road signs using a custom YOLOv8 mo
 
 # Load Model
 
-MODEL_PATH = r"best.pt"
+MODEL_PATH = r"D:\python\MLB_Internship\Day29\best.pt"
 
 if not os.path.exists(MODEL_PATH):
     st.error(f"Model not found!\n\nExpected location:\n{MODEL_PATH}")
