@@ -20,13 +20,30 @@ st.write("Upload an image or video to detect road signs using a custom YOLOv8 mo
 
 # Load Model
 
-MODEL_PATH = r"D:\python\MLB_Internship\Day29\best.pt"
+import streamlit as st
+from pathlib import Path
+import os
 
-if not os.path.exists(MODEL_PATH):
-    st.error(f"Model not found!\n\nExpected location:\n{MODEL_PATH}")
-    st.stop()
+BASE_DIR = Path(__file__).resolve().parent
 
-model = YOLO(MODEL_PATH)
+st.write("Current Working Directory:")
+st.code(os.getcwd())
+
+st.write("App Directory:")
+st.code(str(BASE_DIR))
+
+st.write("Files in App Directory:")
+st.write(os.listdir(BASE_DIR))
+
+MODEL_PATH = BASE_DIR / "best.pt"
+
+st.write("Model Path:")
+st.code(str(MODEL_PATH))
+
+st.write("Model Exists?")
+st.write(MODEL_PATH.exists())
+
+st.stop()
 
 
 # Sidebar
