@@ -186,7 +186,7 @@ else:
 st.markdown(
     """
     <div style="text-align: right; color: gray; font-size:16px;">
-        Developed by <strong>Ali Sabir</strong>
+       © 2026 Developed by <strong>Ali Sabir</strong>
     </div>
     """,
     unsafe_allow_html=True
