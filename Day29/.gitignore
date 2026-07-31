@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Streamlit
+.streamlit/
+
+# YOLO Output
+runs/
+
+# Trained Models
+RoadSign_Project/
+
+# Dataset
+dataset/
+
+# VS Code
+.vscode/
+
+# OS Files
+.DS_Store
+Thumbs.db
