@@ -4,7 +4,7 @@ from PIL import Image
 import tempfile
 import os
 import cv2
-
+from pathlib import Path
 
 # Page Configuration
 
@@ -22,17 +22,11 @@ st.write("Upload an image or video to detect road signs using a custom YOLOv8 mo
 
 from pathlib import Path
 from ultralytics import YOLO
-import streamlit as st
 
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "best.pt"
 
-try:
-    model = YOLO(str(MODEL_PATH))
-    st.success("✅ Model loaded successfully!")
-except Exception as e:
-    st.exception(e)
-    st.stop()
+model = YOLO(str(MODEL_PATH))
 
 # Sidebar
 
