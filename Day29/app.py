@@ -5,9 +5,9 @@ import tempfile
 import os
 import cv2
 
-# ---------------------------
+
 # Page Configuration
-# ---------------------------
+
 st.set_page_config(
     page_title="Road Sign Detection System",
     page_icon="🚦",
@@ -17,10 +17,10 @@ st.set_page_config(
 st.title("🚦 Road Sign Detection System")
 st.write("Upload an image or video to detect road signs using a custom YOLOv8 model.")
 
-# ---------------------------
+
 # Load Model
-# ---------------------------
-MODEL_PATH = "runs/detect/RoadSign_Project/RoadSign_Model/weights/best.pt"
+
+MODEL_PATH = r"runs/detect/RoadSign_Project/RoadSign_Model/weights/best.pt"
 
 if not os.path.exists(MODEL_PATH):
     st.error(f"Model not found!\n\nExpected location:\n{MODEL_PATH}")
@@ -28,9 +28,9 @@ if not os.path.exists(MODEL_PATH):
 
 model = YOLO(MODEL_PATH)
 
-# ---------------------------
+
 # Sidebar
-# ---------------------------
+
 st.sidebar.title("Settings")
 
 confidence = st.sidebar.slider(
@@ -46,9 +46,8 @@ input_type = st.sidebar.radio(
     ["Image", "Video"]
 )
 
-# ==========================================================
 # IMAGE DETECTION
-# ==========================================================
+
 if input_type == "Image":
 
     uploaded_image = st.file_uploader(
@@ -122,9 +121,8 @@ if input_type == "Image":
                     mime="image/jpeg"
                 )
 
-# ==========================================================
 # VIDEO DETECTION
-# ==========================================================
+
 else:
 
     uploaded_video = st.file_uploader(
@@ -184,13 +182,12 @@ else:
                     f"{save_dir}"
                 )
 
-# ---------------------------
 # Footer
-# ---------------------------
+
 st.markdown(
     """
     <div style="text-align: right; color: gray; font-size:16px;">
-        Developed by <strong>Ali Sabir</strong> | ML Bench Internship - Day 28
+        Developed by <strong>Ali Sabir</strong>
     </div>
     """,
     unsafe_allow_html=True
