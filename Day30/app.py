@@ -13,22 +13,6 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🎯 Smart Object Tracking System")
-st.markdown(
-    """
-Upload a video to detect and track multiple objects using **YOLOv8 + ByteTrack**.
-
-### Features
-- Upload Video
-- Object Detection
-- Object Tracking
-- Tracking IDs
-- Confidence Score
-- Unique Object Counting
-- Download Processed Video
-"""
-)
-
 
 # Sidebar
 
