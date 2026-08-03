@@ -20,14 +20,6 @@ st.title("🎯 Smart Object Tracking System")
 st.markdown("""
 Upload a video to detect and track multiple objects using **YOLOv8** and **ByteTrack**.
 
-### Features
-- Upload Video
-- Object Detection
-- Object Tracking
-- Tracking IDs
-- Confidence Score
-- Unique Object Count
-- Save Output Video
 """)
 
 # --------------------------------------------------
@@ -347,20 +339,13 @@ else:
 
     st.info("👆 Upload a video to start tracking.")
 
-# ----------------------------------------
 # Footer
-# ----------------------------------------
-
-st.markdown("---")
 
 st.markdown(
     """
-### Smart Object Tracking System
-
-- Model: **YOLOv8 Nano (yolov8n.pt)**
-- Tracker: **ByteTrack / BoT-SORT**
-- Framework: **Streamlit**
-- Library: **Ultralytics YOLO**
-- Developer: **Ali Sabir**
-"""
+    <div style="text-align: right; color: gray; font-size:16px;">
+       © 2026 Developed by <strong>Ali Sabir</strong>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
