@@ -4,9 +4,9 @@ import cv2
 import tempfile
 import os
 
-# -----------------------------
+
 # Page Configuration
-# -----------------------------
+
 st.set_page_config(
     page_title="Smart Object Tracking System",
     page_icon="🎯",
@@ -18,9 +18,8 @@ st.markdown(
     "Upload a video to detect and track objects using **YOLOv8 + ByteTrack**."
 )
 
-# -----------------------------
 # Sidebar
-# -----------------------------
+
 st.sidebar.header("Settings")
 
 confidence = st.sidebar.slider(
@@ -36,9 +35,8 @@ tracker = st.sidebar.selectbox(
     ["bytetrack.yaml", "botsort.yaml"]
 )
 
-# -----------------------------
 # Load Model
-# -----------------------------
+
 @st.cache_resource
 def load_model():
     return YOLO("yolov8n.pt")
@@ -47,9 +45,8 @@ model = load_model()
 
 st.sidebar.success("YOLOv8 Model Loaded")
 
-# -----------------------------
 # Upload Video
-# -----------------------------
+
 uploaded_file = st.file_uploader(
     "Upload Video",
     type=["mp4", "avi", "mov", "mkv"]
@@ -231,3 +228,14 @@ if uploaded_file is not None:
     cap.release()
 
     os.remove(temp_file.name)
+    
+# Footer
+
+st.markdown(
+    """
+    <div style="text-align: right; color: gray; font-size:16px;">
+       © 2026 Developed by <strong>Ali Sabir</strong>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
