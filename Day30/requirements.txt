@@ -1,7 +1,7 @@
-streamlit
-ultralytics
-opencv-python-headless
-numpy<2
-Pillow
-lapx
-scipy
+streamlit==1.48.1
+ultralytics==8.3.170
+opencv-python-headless==4.10.0.84
+numpy<2.0
+Pillow>=10.0.0
+lapx>=0.5.11
+scipy>=1.11.0
