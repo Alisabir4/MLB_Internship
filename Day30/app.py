@@ -290,42 +290,42 @@ if uploaded_video is not None:
     # ----------------------------------------
     # Output Video
     # ----------------------------------------
+st.subheader("🎥 Processed Video")
 
-    st.subheader("🎥 Processed Video")
+if os.path.exists(output_path):
 
-# Processed Video
-    st.subheader("🎥 Processed Video")
+    # Make sure all resources are released
+    cap.release()
+    writer.release()
 
-    if os.path.exists(output_path):
+    import time
+    time.sleep(1)
 
-        with open(output_path, "rb") as f:
-         video_bytes = f.read()
+    file_size = os.path.getsize(output_path)
 
-    st.video(video_bytes, format="video/mp4")
+    st.success(f"Output Video Size: {round(file_size / (1024 * 1024), 2)} MB")
 
+    with open(output_path, "rb") as f:
+        video_bytes = f.read()
+
+    # Display video
+    st.video(video_bytes)
+
+    # Download button
     st.download_button(
-        "📥 Download Processed Video",
+        label="📥 Download Processed Video",
         data=video_bytes,
         file_name="tracked_output.mp4",
         mime="video/mp4"
     )
 
 else:
-        st.error("Output video not found.")
 
-    # ----------------------------------------
-    # Cleanup
-    # ----------------------------------------
+    st.error("❌ Output video not found.")
 
-try:
-    cap.release()
-except Exception:
-    pass
-
-try:
-    writer.release()
-except Exception:
-    pass
+# ----------------------------------------
+# Cleanup
+# ----------------------------------------
 
 try:
     os.remove(temp_video.name)
