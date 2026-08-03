@@ -5,7 +5,9 @@ import tempfile
 import os
 from collections import defaultdict
 
-# Streamlit Page Configuration
+# --------------------------------------------------
+# Page Configuration
+# --------------------------------------------------
 
 st.set_page_config(
     page_title="Smart Object Tracking System",
@@ -14,15 +16,23 @@ st.set_page_config(
 )
 
 st.title("🎯 Smart Object Tracking System")
-st.markdown(
-    """
-Upload a video to detect and track multiple objects using **YOLOv8 + ByteTrack**.
 
-"""
-)
+st.markdown("""
+Upload a video to detect and track multiple objects using **YOLOv8** and **ByteTrack**.
 
+### Features
+- Upload Video
+- Object Detection
+- Object Tracking
+- Tracking IDs
+- Confidence Score
+- Unique Object Count
+- Save Output Video
+""")
 
+# --------------------------------------------------
 # Sidebar
+# --------------------------------------------------
 
 st.sidebar.header("Tracking Settings")
 
@@ -35,36 +45,36 @@ confidence = st.sidebar.slider(
 )
 
 tracker = st.sidebar.selectbox(
-    "Tracker",
-    (
+    "Tracking Algorithm",
+    [
         "bytetrack.yaml",
         "botsort.yaml"
-    )
+    ]
 )
 
-# Load Model
+# --------------------------------------------------
+# Load YOLO Model
+# --------------------------------------------------
+
 @st.cache_resource
 def load_model():
-    return YOLO("yolov8n.pt")
-
+    model = YOLO("yolov8n.pt")
+    return model
 
 try:
     model = load_model()
-    st.sidebar.success("YOLOv8 Loaded Successfully")
+    st.sidebar.success("YOLOv8 Model Loaded")
 except Exception as e:
-    st.error(e)
+    st.error(f"Model Loading Error:\n{e}")
     st.stop()
 
+# --------------------------------------------------
 # Upload Video
+# --------------------------------------------------
 
 uploaded_video = st.file_uploader(
     "Upload Video",
-    type=[
-        "mp4",
-        "avi",
-        "mov",
-        "mkv"
-    ]
+    type=["mp4", "avi", "mov", "mkv"]
 )
 
 if uploaded_video is not None:
@@ -82,29 +92,34 @@ if uploaded_video is not None:
     cap = cv2.VideoCapture(temp_video.name)
 
     if not cap.isOpened():
-        st.error("Unable to open video.")
+        st.error("Unable to open uploaded video.")
         st.stop()
-
-    width = 640
-    height = 360
 
     fps = cap.get(cv2.CAP_PROP_FPS)
 
-    if fps == 0:
+    if fps <= 0:
         fps = 30
+
+    width = 640
+    height = 360
 
     output_path = os.path.join(
         "output_videos",
         "tracked_output.mp4"
     )
-    width = 640
-    height = 360
+
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+
     writer = cv2.VideoWriter(
         output_path,
-        cv2.VideoWriter_fourcc(*"mp4v"),
+        fourcc,
         fps,
         (width, height)
     )
+
+    if not writer.isOpened():
+        st.error("Unable to create output video.")
+        st.stop()
 
     total_frames = int(
         cap.get(cv2.CAP_PROP_FRAME_COUNT)
@@ -116,21 +131,23 @@ if uploaded_video is not None:
 
     unique_ids = set()
 
-    class_object_ids = defaultdict(set)
+    class_ids = defaultdict(set)
 
-    frame_count = 0
+    processed_frames = 0
 
-    st.info("Tracking Started...")
-
-    while cap.isOpened():
+    st.info("Processing Video...")
+    
+    while True:
 
         success, frame = cap.read()
 
         if not success:
             break
 
-        frame = cv2.resize(frame, (640, 360))
+        # Resize frame for better performance
+        frame = cv2.resize(frame, (width, height))
 
+        # Run tracking
         results = model.track(
             frame,
             persist=True,
@@ -139,9 +156,9 @@ if uploaded_video is not None:
             verbose=False
         )
 
-        annotated = frame.copy()
+        annotated_frame = frame.copy()
 
-        if len(results) > 0:
+        if results and len(results):
 
             result = results[0]
 
@@ -167,17 +184,16 @@ if uploaded_video is not None:
                     class_name = model.names[int(cls)]
 
                     unique_ids.add(track_id)
-
-                    class_object_ids[class_name].add(track_id)
+                    class_ids[class_name].add(track_id)
 
                     label = (
-                        f"{class_name} "
-                        f"ID:{track_id} "
+                        f"{class_name} | "
+                        f"ID:{track_id} | "
                         f"{score:.2f}"
                     )
 
                     cv2.rectangle(
-                        annotated,
+                        annotated_frame,
                         (x1, y1),
                         (x2, y2),
                         (0, 255, 0),
@@ -185,37 +201,44 @@ if uploaded_video is not None:
                     )
 
                     cv2.putText(
-                        annotated,
+                        annotated_frame,
                         label,
-                        (x1, y1 - 10),
+                        (x1, max(y1 - 10, 20)),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         0.6,
                         (0, 255, 0),
                         2
                     )
 
-        writer.write(annotated)
+        # Write processed frame
+        writer.write(annotated_frame)
 
-        frame_count += 1
+        processed_frames += 1
 
         if total_frames > 0:
             progress.progress(
-                min(frame_count / total_frames, 1.0)
+                min(processed_frames / total_frames, 1.0)
             )
 
         status.text(
-            f"Processing Frame {frame_count} / {total_frames}"
+            f"Processing Frame {processed_frames}/{total_frames}"
         )
-        cap.release()
+
+    # ------------------------------
+    # Release Resources
+    # ------------------------------
+
+    cap.release()
     writer.release()
 
     progress.empty()
     status.empty()
 
-    st.success("✅ Video Processing Completed!")
-
-   
-    # Summary Metrics
+    st.success("✅ Video Processing Completed Successfully")
+    
+        # ----------------------------------------
+    # Tracking Summary
+    # ----------------------------------------
 
     st.subheader("📊 Tracking Summary")
 
@@ -230,64 +253,91 @@ if uploaded_video is not None:
     with col2:
         st.metric(
             "Frames Processed",
-            frame_count
+            processed_frames
         )
 
+    # ----------------------------------------
+    # Object Count Per Class
+    # ----------------------------------------
 
-    # Object Counts
-   
-    st.subheader("📋 Unique Objects By Class")
+    st.subheader("📋 Object Count by Class")
 
-    if class_object_ids:
+    if len(class_ids):
 
-        table = []
+        data = []
 
-        for class_name in sorted(class_object_ids.keys()):
+        for class_name in sorted(class_ids.keys()):
 
-            table.append(
+            data.append(
                 {
                     "Object": class_name,
-                    "Unique Count": len(class_object_ids[class_name])
+                    "Unique Count": len(class_ids[class_name])
                 }
             )
 
-        st.table(table)
+        st.table(data)
 
     else:
 
         st.warning("No objects detected.")
 
-    
+    # ----------------------------------------
     # Tracking IDs
+    # ----------------------------------------
+
     st.subheader("🆔 Tracking IDs")
 
     if unique_ids:
 
-        st.write(sorted(list(unique_ids)))
+        st.write(sorted(unique_ids))
 
     else:
 
         st.write("No IDs Found")
 
-    # Processed Video
+    # ----------------------------------------
+    # Output Video
+    # ----------------------------------------
+
     st.subheader("🎥 Processed Video")
 
-    st.video(output_path)
+    if os.path.exists(output_path):
 
-    # Download Button
-    
-    with open(output_path, "rb") as file:
+        file_size = os.path.getsize(output_path)
+
+        st.write(f"Video Size: {round(file_size/1024/1024,2)} MB")
+
+        with open(output_path, "rb") as video_file:
+
+            video_bytes = video_file.read()
+
+        st.video(video_bytes)
 
         st.download_button(
-            label="📥 Download Processed Video",
-            data=file,
+            "📥 Download Processed Video",
+            data=video_bytes,
             file_name="tracked_output.mp4",
             mime="video/mp4"
         )
 
-   
+    else:
+
+        st.error("Output video not found.")
+
+    # ----------------------------------------
     # Cleanup
- 
+    # ----------------------------------------
+
+    try:
+        cap.release()
+    except:
+        pass
+
+    try:
+        writer.release()
+    except:
+        pass
+
     try:
         os.remove(temp_video.name)
     except:
@@ -295,15 +345,22 @@ if uploaded_video is not None:
 
 else:
 
-    st.info("👆 Upload a video to begin object tracking.")
+    st.info("👆 Upload a video to start tracking.")
 
+# ----------------------------------------
 # Footer
+# ----------------------------------------
+
+st.markdown("---")
 
 st.markdown(
     """
-    <div style="text-align: right; color: gray; font-size:16px;">
-       © 2026 Developed by <strong>Ali Sabir</strong>
-    </div>
-    """,
-    unsafe_allow_html=True
+### Smart Object Tracking System
+
+- Model: **YOLOv8 Nano (yolov8n.pt)**
+- Tracker: **ByteTrack / BoT-SORT**
+- Framework: **Streamlit**
+- Library: **Ultralytics YOLO**
+- Developer: **Ali Sabir**
+"""
 )
