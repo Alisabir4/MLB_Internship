@@ -1,7 +1,18 @@
-streamlit
-ultralytics
-opencv-python-headless
-numpy<2
-lapx
-scipy
-pillow
+# streamlit
+# ultralytics
+# opencv-python-headless
+# numpy<2
+# lapx
+# scipy
+# pillow
+# Core app
+streamlit==1.60.0
+
+# Model + tracking
+ultralytics==8.4.113
+lap==0.5.13              # linear assignment solver required by ByteTrack/BoT-SORT
+opencv-python-headless==4.11.0.86
+numpy>=1.26,<3
+pillow>=10.0
+
+# Ultralytics pulls in a compatible torch/torchvision automatically.
