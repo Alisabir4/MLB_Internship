@@ -4,9 +4,8 @@ import cv2
 import tempfile
 import os
 
-# -----------------------------
 # Streamlit Page Configuration
-# -----------------------------
+
 st.set_page_config(
     page_title="Smart Object Tracking System",
     page_icon="🎯",
@@ -16,18 +15,16 @@ st.set_page_config(
 st.title("🎯 Smart Object Tracking System")
 st.write("Upload a video to detect and track objects using YOLOv8 + ByteTrack.")
 
-# -----------------------------
 # Load YOLO Model
-# -----------------------------
+
 @st.cache_resource
 def load_model():
     return YOLO("yolov8n.pt")
 
 model = load_model()
 
-# -----------------------------
+
 # Upload Video
-# -----------------------------
 uploaded_file = st.file_uploader(
     "Upload Video",
     type=["mp4", "avi", "mov", "mkv"]
