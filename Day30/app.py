@@ -293,51 +293,49 @@ if uploaded_video is not None:
 
     st.subheader("🎥 Processed Video")
 
+# Processed Video
+    st.subheader("🎥 Processed Video")
+
     if os.path.exists(output_path):
 
-        file_size = os.path.getsize(output_path)
+        with open(output_path, "rb") as f:
+         video_bytes = f.read()
 
-        st.write(f"Video Size: {round(file_size/1024/1024,2)} MB")
+    st.video(video_bytes, format="video/mp4")
 
-        with open(output_path, "rb") as video_file:
+    st.download_button(
+        "📥 Download Processed Video",
+        data=video_bytes,
+        file_name="tracked_output.mp4",
+        mime="video/mp4"
+    )
 
-            video_bytes = video_file.read()
-
-        st.video(video_bytes)
-
-        st.download_button(
-            "📥 Download Processed Video",
-            data=video_bytes,
-            file_name="tracked_output.mp4",
-            mime="video/mp4"
-        )
-
-    else:
-
+else:
         st.error("Output video not found.")
 
     # ----------------------------------------
     # Cleanup
     # ----------------------------------------
 
-    try:
-        cap.release()
-    except:
-        pass
+try:
+    cap.release()
+except Exception:
+    pass
 
-    try:
-        writer.release()
-    except:
-        pass
+try:
+    writer.release()
+except Exception:
+    pass
 
-    try:
-        os.remove(temp_video.name)
-    except:
-        pass
+try:
+    os.remove(temp_video.name)
+except Exception:
+    pass
 
 else:
 
     st.info("👆 Upload a video to start tracking.")
+
 
 # Footer
 
