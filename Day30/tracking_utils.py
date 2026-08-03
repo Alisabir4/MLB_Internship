@@ -9,11 +9,13 @@ def process_video(
     tracker="bytetrack.yaml",
     conf=0.30,
     progress_callback=None,
+    frame_callback=None,
 ):
 
     cap = cv2.VideoCapture(source_path)
 
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
     fps = cap.get(cv2.CAP_PROP_FPS)
 
     if fps <= 0:
@@ -30,6 +32,7 @@ def process_video(
     )
 
     unique_ids = set()
+
     class_counts = defaultdict(set)
 
     frame_number = 0
@@ -74,6 +77,7 @@ def process_video(
                 class_name = model.names[int(cls)]
 
                 unique_ids.add(track_id)
+
                 class_counts[class_name].add(track_id)
 
                 label = (
@@ -86,26 +90,40 @@ def process_video(
                     annotated,
                     (x1, y1),
                     (x2, y2),
-                    (0, 255, 0),
+                    (0,255,0),
                     2
                 )
 
                 cv2.putText(
                     annotated,
                     label,
-                    (x1, max(20, y1 - 10)),
+                    (x1, max(20, y1-10)),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.6,
-                    (0, 255, 0),
+                    (0,255,0),
                     2
                 )
 
         writer.write(annotated)
 
         frame_number += 1
+                # -----------------------------------------
+        # Update Progress
+        # -----------------------------------------
 
-        if progress_callback:
+        if progress_callback is not None:
             progress_callback(frame_number, total_frames)
+
+        # -----------------------------------------
+        # Live Frame Display
+        # -----------------------------------------
+
+        if frame_callback is not None:
+            frame_callback(annotated)
+
+    # -----------------------------------------
+    # Release Resources
+    # -----------------------------------------
 
     cap.release()
     writer.release()
@@ -114,8 +132,8 @@ def process_video(
         "frames": frame_number,
         "unique_object_count": len(unique_ids),
         "per_class_unique_counts": {
-            k: len(v)
-            for k, v in class_counts.items()
+            cls: len(ids)
+            for cls, ids in class_counts.items()
         },
         "output_path": output_path,
     }
