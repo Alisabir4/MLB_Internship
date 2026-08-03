@@ -13,6 +13,14 @@ st.set_page_config(
     layout="wide"
 )
 
+st.title("🎯 Smart Object Tracking System")
+st.markdown(
+    """
+Upload a video to detect and track multiple objects using **YOLOv8 + ByteTrack**.
+
+"""
+)
+
 
 # Sidebar
 
