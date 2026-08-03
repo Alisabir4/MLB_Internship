@@ -97,7 +97,8 @@ if uploaded_video is not None:
         "output_videos",
         "tracked_output.mp4"
     )
-
+    width = 640
+    height = 360
     writer = cv2.VideoWriter(
         output_path,
         cv2.VideoWriter_fourcc(*"mp4v"),
@@ -128,10 +129,7 @@ if uploaded_video is not None:
         if not success:
             break
 
-        frame = cv2.resize(
-            frame,
-            (width, height)
-        )
+        frame = cv2.resize(frame, (640, 360))
 
         results = model.track(
             frame,
