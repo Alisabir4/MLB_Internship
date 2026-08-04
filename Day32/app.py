@@ -1,6 +1,7 @@
 import streamlit as st
 import tempfile
 import os
+import numpy as np
 
 from vehicle_counter import VehicleCounter
 
@@ -124,10 +125,22 @@ if uploaded_file:
 
             # Show live frame
 
+            
+
+            if frame is None:
+                st.error("Frame is None")
+                st.stop()
+
+            st.write(type(frame))
+
+            if not isinstance(frame, np.ndarray):
+                st.error(f"Invalid frame type: {type(frame)}")
+                st.stop()
+
             video_placeholder.image(
                 frame,
                 channels="BGR",
-                use_container_width=True
+                use_container_width=True,
             )
 
 
