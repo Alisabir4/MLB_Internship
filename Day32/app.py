@@ -1,14 +1,9 @@
 import streamlit as st
 import tempfile
 import os
-import numpy as np
+import cv2
 
 from vehicle_counter import VehicleCounter
-
-
-# -----------------------------
-# Page Configuration
-# -----------------------------
 
 st.set_page_config(
     page_title="Smart Vehicle Counting System",
@@ -16,221 +11,150 @@ st.set_page_config(
     layout="wide"
 )
 
-
-# -----------------------------
-# Title
-# -----------------------------
-
 st.title("🚗 Smart Vehicle Counting System")
-st.write(
-    "YOLOv8 + ByteTrack based Vehicle Detection, Tracking and Counting"
+
+st.markdown(
+    """
+Detect, Track and Count **Cars**, **Motorcycles**, **Buses**, and **Trucks**
+using **YOLOv8 + ByteTrack**.
+"""
 )
-
-
-# -----------------------------
-# Upload Video
-# -----------------------------
 
 uploaded_file = st.file_uploader(
-    "Upload Traffic Video",
-    type=["mp4", "avi", "mov"]
+    "Upload a Traffic Video",
+    type=["mp4", "avi", "mov", "mkv"]
 )
 
+if uploaded_file is not None:
 
-if uploaded_file:
+    os.makedirs("output", exist_ok=True)
 
-
-    # Save uploaded video temporarily
-
-    temp_file = tempfile.NamedTemporaryFile(
+    temp_video = tempfile.NamedTemporaryFile(
         delete=False,
         suffix=".mp4"
     )
 
-    temp_file.write(
-        uploaded_file.read()
-    )
+    temp_video.write(uploaded_file.read())
+    temp_video.close()
 
-    input_path = temp_file.name
+    output_path = "output/counted_video.mp4"
 
+    if st.button("▶ Start Vehicle Counting", use_container_width=True):
 
-    # Output folder
+        counter = VehicleCounter("yolov8n.pt")
 
-    os.makedirs(
-        "output",
-        exist_ok=True
-    )
-
-
-    output_path = "output/vehicle_counted_video.mp4"
-
-
-
-    if st.button(
-        "▶ Start Vehicle Counting",
-        use_container_width=True
-    ):
-
-
-        counter = VehicleCounter(
-            "yolov8n.pt"
-        )
-
-
-        # -----------------------------
-        # UI Containers
-        # -----------------------------
+        st.divider()
 
         video_placeholder = st.empty()
 
-        status = st.empty()
+        progress_bar = st.progress(0)
 
-        progress = st.progress(0)
+        status_text = st.empty()
 
+        st.subheader("Live Statistics")
 
         col1, col2, col3, col4, col5 = st.columns(5)
 
+        car_metric = col1.empty()
+        bike_metric = col2.empty()
+        bus_metric = col3.empty()
+        truck_metric = col4.empty()
+        total_metric = col5.empty()
 
-        car_box = col1.empty()
-        motorcycle_box = col2.empty()
-        bus_box = col3.empty()
-        truck_box = col4.empty()
-        total_box = col5.empty()
+        cap = cv2.VideoCapture(temp_video.name)
 
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
+        cap.release()
 
+        processed_frames = 0
+                # -----------------------------
+        # Live Processing Loop
         # -----------------------------
-        # Processing
-        # -----------------------------
-
-        frame_number = 0
-
-
         for (
             frame,
-            cars,
-            motorcycles,
-            buses,
-            trucks,
+            car,
+            motorcycle,
+            bus,
+            truck,
             total
-
         ) in counter.process_video(
-            input_path,
+            temp_video.name,
             output_path
         ):
 
+            processed_frames += 1
 
-            frame_number += 1
-
-
-            # Show live frame
-
-            
-
-            if frame is None:
-                st.error("Frame is None")
-                st.stop()
-
-            st.write(type(frame))
-
-            if not isinstance(frame, np.ndarray):
-                st.error(f"Invalid frame type: {type(frame)}")
-                st.stop()
-
+            # Display current processed frame
             video_placeholder.image(
                 frame,
                 channels="BGR",
-                use_container_width=True,
-            )
-
-
-            # Update statistics
-
-            car_box.metric(
-                "🚗 Cars",
-                cars
-            )
-
-            motorcycle_box.metric(
-                "🏍 Motorcycles",
-                motorcycles
-            )
-
-            bus_box.metric(
-                "🚌 Buses",
-                buses
-            )
-
-            truck_box.metric(
-                "🚚 Trucks",
-                trucks
-            )
-
-            total_box.metric(
-                "🚘 Total",
-                total
-            )
-
-
-            status.info(
-                f"Processing Frame: {frame_number}"
-            )
-
-
-            # Simple progress animation
-
-            progress.progress(
-                min(frame_number % 100 / 100, 1.0)
-            )
-
-
-
-        status.success(
-            "✅ Processing Completed"
-        )
-
-
-        progress.progress(1.0)
-
-
-
-        # -----------------------------
-        # Final Video
-        # -----------------------------
-
-        st.subheader(
-            "Processed Video"
-        )
-
-
-        st.video(
-            output_path
-        )
-
-
-        with open(
-            output_path,
-            "rb"
-        ) as file:
-
-
-            st.download_button(
-
-                label="⬇ Download Processed Video",
-
-                data=file,
-
-                file_name="vehicle_counted_video.mp4",
-
-                mime="video/mp4",
-
                 use_container_width=True
             )
 
+            # Update metrics
+            car_metric.metric("🚗 Cars", car)
+            bike_metric.metric("🏍 Motorcycle", motorcycle)
+            bus_metric.metric("🚌 Bus", bus)
+            truck_metric.metric("🚚 Truck", truck)
+            total_metric.metric("🚘 Total", total)
 
+            # Progress Bar
+            if total_frames > 0:
 
-else:
+                progress = processed_frames / total_frames
 
-    st.info(
-        "Please upload a traffic video to start."
-    )
+                progress_bar.progress(
+                    min(progress, 1.0)
+                )
+
+            status_text.info(
+                f"Processing Frame {processed_frames} of {total_frames}"
+            )
+
+        progress_bar.progress(1.0)
+
+        status_text.success(
+            "✅ Vehicle Counting Completed Successfully!"
+        )
+                # -----------------------------------
+        # Display Processed Video
+        # -----------------------------------
+
+        st.divider()
+
+        st.subheader("🎥 Processed Video")
+
+        if os.path.exists(output_path):
+
+            st.video(output_path)
+
+            with open(output_path, "rb") as video_file:
+
+                st.download_button(
+                    label="⬇ Download Processed Video",
+                    data=video_file,
+                    file_name="counted_video.mp4",
+                    mime="video/mp4",
+                    use_container_width=True
+                )
+
+        else:
+
+            st.error("Processed video not found.")
+
+        # -----------------------------------
+        # Clean Up Temporary File
+        # -----------------------------------
+
+        try:
+
+            if os.path.exists(temp_video.name):
+
+                os.remove(temp_video.name)
+
+        except Exception:
+
+            pass
+
+        st.success("✅ Vehicle Counting Completed!")
