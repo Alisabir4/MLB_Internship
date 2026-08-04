@@ -1,160 +1,141 @@
 import streamlit as st
+from ultralytics import YOLO
+import cv2
 import tempfile
 import os
-import cv2
 
-from vehicle_counter import VehicleCounter
+st.set_page_config(page_title="Smart Vehicle Counting System", layout="centered")
 
-st.set_page_config(
-    page_title="Smart Vehicle Counting System",
-    page_icon="🚗",
-    layout="wide"
-)
+st.title(" Smart Vehicle Counting System")
 
-st.title("🚗 Smart Vehicle Counting System")
+st.write("Upload a traffic video to detect and count vehicles.")
 
-st.markdown(
-    """
-Detect, Track and Count **Cars**, **Motorcycles**, **Buses**, and **Trucks**
-using **YOLOv8 + ByteTrack**.
-"""
-)
+# Load YOLO model
+model = YOLO("yolov8n.pt")
 
 uploaded_file = st.file_uploader(
-    "Upload a Traffic Video",
-    type=["mp4", "avi", "mov", "mkv"]
+    "Upload Traffic Video",
+    type=["mp4", "avi", "mov"]
 )
 
 if uploaded_file is not None:
 
-    os.makedirs("output", exist_ok=True)
+    temp_input = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
+    temp_input.write(uploaded_file.read())
+    temp_input.close()
 
-    temp_video = tempfile.NamedTemporaryFile(
-        delete=False,
-        suffix=".mp4"
+    cap = cv2.VideoCapture(temp_input.name)
+
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = cap.get(cv2.CAP_PROP_FPS)
+
+    output_path = "output.mp4"
+
+    writer = cv2.VideoWriter(
+        output_path,
+        cv2.VideoWriter_fourcc(*"mp4v"),
+        fps,
+        (width, height)
     )
 
-    temp_video.write(uploaded_file.read())
-    temp_video.close()
+    line_y = height // 2
 
-    output_path = "output/counted_video.mp4"
+    vehicle_classes = {
+        2: "Car",
+        3: "Motorcycle",
+        5: "Bus",
+        7: "Truck"
+    }
 
-    if st.button("▶ Start Vehicle Counting", use_container_width=True):
+    counted_ids = set()
 
-        counter = VehicleCounter("yolov8n.pt")
+    total = 0
 
-        st.divider()
+    progress = st.progress(0)
 
-        video_placeholder = st.empty()
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    processed = 0
 
-        progress_bar = st.progress(0)
+    while cap.isOpened():
 
-        status_text = st.empty()
+        success, frame = cap.read()
 
-        st.subheader("Live Statistics")
+        if not success:
+            break
 
-        col1, col2, col3, col4, col5 = st.columns(5)
-
-        car_metric = col1.empty()
-        bike_metric = col2.empty()
-        bus_metric = col3.empty()
-        truck_metric = col4.empty()
-        total_metric = col5.empty()
-
-        cap = cv2.VideoCapture(temp_video.name)
-
-        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
-        cap.release()
-
-        processed_frames = 0
-                # -----------------------------
-        # Live Processing Loop
-        # -----------------------------
-        for (
+        results = model.track(
             frame,
-            car,
-            motorcycle,
-            bus,
-            truck,
-            total
-        ) in counter.process_video(
-            temp_video.name,
-            output_path
-        ):
-
-            processed_frames += 1
-
-            # Display current processed frame
-            video_placeholder.image(
-                frame,
-                channels="BGR",
-                use_container_width=True
-            )
-
-            # Update metrics
-            car_metric.metric("🚗 Cars", car)
-            bike_metric.metric("🏍 Motorcycle", motorcycle)
-            bus_metric.metric("🚌 Bus", bus)
-            truck_metric.metric("🚚 Truck", truck)
-            total_metric.metric("🚘 Total", total)
-
-            # Progress Bar
-            if total_frames > 0:
-
-                progress = processed_frames / total_frames
-
-                progress_bar.progress(
-                    min(progress, 1.0)
-                )
-
-            status_text.info(
-                f"Processing Frame {processed_frames} of {total_frames}"
-            )
-
-        progress_bar.progress(1.0)
-
-        status_text.success(
-            "✅ Vehicle Counting Completed Successfully!"
+            persist=True,
+            tracker="bytetrack.yaml",
+            verbose=False
         )
-                # -----------------------------------
-        # Display Processed Video
-        # -----------------------------------
 
-        st.divider()
+        cv2.line(frame, (0, line_y), (width, line_y), (0,255,255), 3)
 
-        st.subheader("🎥 Processed Video")
+        if results[0].boxes.id is not None:
 
-        if os.path.exists(output_path):
+            boxes = results[0].boxes.xyxy.cpu().numpy()
+            ids = results[0].boxes.id.cpu().numpy().astype(int)
+            classes = results[0].boxes.cls.cpu().numpy().astype(int)
 
-            st.video(output_path)
+            for box, track_id, cls in zip(boxes, ids, classes):
 
-            with open(output_path, "rb") as video_file:
+                if cls not in vehicle_classes:
+                    continue
 
-                st.download_button(
-                    label="⬇ Download Processed Video",
-                    data=video_file,
-                    file_name="counted_video.mp4",
-                    mime="video/mp4",
-                    use_container_width=True
+                x1, y1, x2, y2 = map(int, box)
+
+                cx = (x1+x2)//2
+                cy = (y1+y2)//2
+
+                label = vehicle_classes[cls]
+
+                cv2.rectangle(frame,(x1,y1),(x2,y2),(0,255,0),2)
+
+                cv2.putText(
+                    frame,
+                    f"{label} ID:{track_id}",
+                    (x1,y1-10),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.6,
+                    (0,255,0),
+                    2
                 )
 
-        else:
+                if abs(cy-line_y) < 5:
 
-            st.error("Processed video not found.")
+                    if track_id not in counted_ids:
+                        counted_ids.add(track_id)
+                        total += 1
 
-        # -----------------------------------
-        # Clean Up Temporary File
-        # -----------------------------------
+        cv2.putText(
+            frame,
+            f"Total Vehicles: {total}",
+            (20,40),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (255,0,0),
+            3
+        )
 
-        try:
+        writer.write(frame)
 
-            if os.path.exists(temp_video.name):
+        processed += 1
+        progress.progress(min(processed/frame_count,1.0))
 
-                os.remove(temp_video.name)
+    cap.release()
+    writer.release()
 
-        except Exception:
+    st.success(f"Processing Completed!\n\nTotal Vehicles Counted: {total}")
 
-            pass
+    st.video(output_path)
 
-        st.success("✅ Vehicle Counting Completed!")
+    with open(output_path,"rb") as file:
+        st.download_button(
+            "Download Processed Video",
+            file,
+            file_name="vehicle_counting_output.mp4"
+        )
+
+    os.remove(temp_input.name)
