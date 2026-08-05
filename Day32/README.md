@@ -39,7 +39,7 @@ streamlit run app.py
 ## Project Structure
 
 ```
-Day33/
+Day32/
 │
 ├── app.py
 ├── people_counter.py
