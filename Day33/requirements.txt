@@ -4,3 +4,4 @@ opencv-python-headless
 numpy
 pandas
 Pillow
+lapx
