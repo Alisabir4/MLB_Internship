@@ -116,7 +116,7 @@ Day35/
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/your_username/your_repository.git
+git clone https://github.com/Alisabir4/MLB_Internship/tree/main/Day34
 
 Move into project folder:
 
