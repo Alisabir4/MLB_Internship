@@ -1,0 +1,25 @@
+Frame,Time_Seconds,Track_ID,Object,Event,X,Y
+14,0.58,114,bus,Entry,290,252
+66,2.75,122,traffic light,Entry,278,161
+70,2.92,124,bus,Entry,288,255
+109,4.55,130,traffic light,Entry,278,163
+137,5.71,133,bus,Entry,288,256
+148,6.17,135,car,Entry,257,268
+171,7.13,135,car,Exit,252,271
+178,7.42,135,car,Entry,250,270
+183,7.63,111,truck,Entry,164,263
+189,7.88,140,traffic light,Entry,277,162
+192,8.01,111,truck,Exit,216,272
+218,9.09,146,car,Entry,324,266
+223,9.3,148,bus,Entry,287,254
+255,10.64,147,car,Entry,328,270
+261,10.89,147,car,Exit,327,271
+266,11.09,151,car,Entry,257,265
+266,11.09,147,car,Entry,326,269
+286,11.93,153,traffic light,Entry,278,163
+323,13.47,134,car,Entry,277,266
+324,13.51,151,car,Exit,242,271
+360,15.01,111,car,Entry,331,270
+371,15.47,171,car,Entry,255,269
+386,16.1,171,car,Exit,252,271
+386,16.1,177,traffic light,Entry,279,162
