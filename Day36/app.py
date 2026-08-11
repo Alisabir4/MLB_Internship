@@ -1,15 +1,16 @@
 import streamlit as st
 import os
-import cv2
-import numpy as np
 from ultralytics import YOLO
 
-st.set_page_config(page_title="YOLO Model Performance Audit")
+st.set_page_config(
+    page_title="YOLO Model Performance Audit"
+)
 
 st.title("YOLO Model Performance Audit")
 
 model = YOLO("yolov8n.pt")
 
+# Model Evaluation
 st.header("Model Evaluation")
 
 col1, col2, col3, col4 = st.columns(4)
@@ -19,15 +20,21 @@ col2.metric("Recall", "12.44%")
 col3.metric("mAP@50", "8.83%")
 col4.metric("mAP@50-95", "5.13%")
 
+# Confusion Matrix
 st.header("Confusion Matrix")
 
 matrix_path = "results/traffic_confusion_matrix.png"
 
 if os.path.exists(matrix_path):
-    st.image(matrix_path)
+    st.image(
+        matrix_path,
+        caption="Traffic-200 Confusion Matrix",
+        use_container_width=True
+    )
 else:
     st.warning("Confusion matrix not found.")
 
+# Challenging Examples
 st.header("Challenging Examples")
 
 uploaded = st.file_uploader(
@@ -37,23 +44,22 @@ uploaded = st.file_uploader(
 
 if uploaded is not None:
 
-    image_bytes = uploaded.read()
-    image_array = np.frombuffer(image_bytes, np.uint8)
-    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+    from PIL import Image
 
-    if image is not None:
+    image = Image.open(uploaded)
 
-        results = model.predict(
-            source=image,
-            conf=0.25,
-            iou=0.50,
-            verbose=False
-        )
+    results = model.predict(
+        source=image,
+        conf=0.25,
+        iou=0.50,
+        verbose=False
+    )
 
-        annotated = results[0].plot()
+    annotated = results[0].plot()
 
-        st.image(
-            cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB),
-            caption="YOLOv8 Prediction",
-            use_container_width=True
-        )
+    st.image(
+        annotated,
+        caption="YOLOv8 Prediction",
+        channels="BGR",
+        use_container_width=True
+    )
