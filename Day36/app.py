@@ -44,7 +44,7 @@ matrix_path = "results/traffic_confusion_matrix.png"
 if os.path.exists(matrix_path):
     st.image(matrix_path)
 else:
-    st.warning("Confusion matrix not found.")
+    st.info("Run evaluation first.")
 
 # Challenging Examples
 st.header("Challenging Examples")
