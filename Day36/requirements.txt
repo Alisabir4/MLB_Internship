@@ -1,7 +1,2 @@
 streamlit
-ultralytics
-opencv-python-headless
-numpy<2
-matplotlib
-pyyaml
 pillow
