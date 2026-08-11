@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 6
+names: ['bicycle', 'bus', 'car', 'motorcycle', 'person', 'truck']
+
+roboflow:
+  workspace: dyiel
+  project: traffic-200
+  version: 13
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/dyiel/traffic-200/dataset/13
