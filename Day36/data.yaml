@@ -1,4 +1,4 @@
-path: data.yaml
+path: D:\python\MLB_Internship\Day36\data.yaml
 
 train: test100/images
 val: test100/images
