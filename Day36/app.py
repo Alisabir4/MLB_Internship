@@ -18,7 +18,7 @@ col4.metric("mAP@50-95", "5.13%")
 # Confusion Matrix
 st.header("Confusion Matrix")
 
-matrix_path = "results/traffic_confusion_matrix.png"
+matrix_path = r"results/traffic_confusion_matrix.png"
 
 if os.path.exists(matrix_path):
     st.image(
