@@ -1,6 +1,8 @@
 import streamlit as st
 import os
-from PIL import Image
+import cv2
+import numpy as np
+from ultralytics import YOLO
 
 st.set_page_config(
     page_title="YOLO Model Performance Audit",
@@ -9,7 +11,13 @@ st.set_page_config(
 
 st.title("YOLO Model Performance Audit")
 
-RESULT_DIR = "results"
+MODEL_PATH = "yolov8n.pt"
+DATA_YAML = "data.yaml"
+RESULTS_DIR = "results"
+
+os.makedirs(RESULTS_DIR, exist_ok=True)
+
+model = YOLO(MODEL_PATH)
 
 # -----------------------------
 # MODEL EVALUATION
@@ -19,55 +27,64 @@ st.header("Model Evaluation")
 
 if st.button("Run Evaluation"):
 
-    metrics_path = os.path.join(
-        RESULT_DIR,
-        "metrics.txt"
-    )
+    if not os.path.exists(DATA_YAML):
 
-    if os.path.exists(metrics_path):
+        st.error("data.yaml not found.")
 
-        metrics = {}
+    else:
 
-        with open(metrics_path, "r") as file:
+        with st.spinner("Running evaluation..."):
 
-            for line in file:
+            results = model.val(
+                data=DATA_YAML,
+                split="test",
+                imgsz=640,
+                conf=0.25,
+                iou=0.50,
+                plots=True,
+                verbose=False
+            )
 
-                if ":" in line:
+        precision = float(results.box.mp)
+        recall = float(results.box.mr)
+        map50 = float(results.box.map50)
+        map5095 = float(results.box.map)
 
-                    key, value = line.split(":", 1)
-
-                    metrics[key.strip()] = value.strip()
+        st.success("Evaluation completed.")
 
         col1, col2, col3, col4 = st.columns(4)
 
         col1.metric(
             "Precision",
-            metrics.get("Precision", "N/A")
+            f"{precision:.4f}"
         )
 
         col2.metric(
             "Recall",
-            metrics.get("Recall", "N/A")
+            f"{recall:.4f}"
         )
 
         col3.metric(
             "mAP@50",
-            metrics.get("mAP@50", "N/A")
+            f"{map50:.4f}"
         )
 
         col4.metric(
             "mAP@50-95",
-            metrics.get("mAP@50-95", "N/A")
+            f"{map5095:.4f}"
         )
 
-        st.success("Evaluation results loaded.")
+        with open(
+            os.path.join(RESULTS_DIR, "metrics.txt"),
+            "w"
+        ) as file:
 
-    else:
-
-        st.error(
-            "Evaluation results not found. "
-            "Run the evaluation locally first."
-        )
+            file.write(
+                f"Precision : {precision:.4f}\n"
+                f"Recall    : {recall:.4f}\n"
+                f"mAP@50    : {map50:.4f}\n"
+                f"mAP@50-95 : {map5095:.4f}\n"
+            )
 
 
 # -----------------------------
@@ -76,23 +93,32 @@ if st.button("Run Evaluation"):
 
 st.header("Confusion Matrix")
 
-matrix_path = os.path.join(
-    RESULT_DIR,
-    r"traffic_confusion_matrix.png"
-)
+matrix_paths = [
+    "results/traffic_confusion_matrix.png",
+    "runs/detect/results/confusion_matrix.png",
+    "runs/detect/val/confusion_matrix.png",
+    "runs/detect/val2/confusion_matrix.png"
+]
 
-if os.path.exists(matrix_path):
+matrix_found = False
 
-    st.image(
-        matrix_path,
-        caption="Traffic-200 6-Class Confusion Matrix",
-        use_container_width=True
-    )
+for matrix_path in matrix_paths:
 
-else:
+    if os.path.exists(matrix_path):
 
-    st.warning(
-        "Confusion matrix not found."
+        st.image(
+            matrix_path,
+            caption="Confusion Matrix",
+            use_container_width=True
+        )
+
+        matrix_found = True
+        break
+
+if not matrix_found:
+
+    st.info(
+        "Run Evaluation to generate the confusion matrix."
     )
 
 
@@ -109,10 +135,40 @@ uploaded = st.file_uploader(
 
 if uploaded is not None:
 
-    image = Image.open(uploaded)
+    image_bytes = uploaded.read()
 
-    st.image(
-        image,
-        caption="Challenging Example",
-        use_container_width=True
+    image_array = np.frombuffer(
+        image_bytes,
+        dtype=np.uint8
     )
+
+    image = cv2.imdecode(
+        image_array,
+        cv2.IMREAD_COLOR
+    )
+
+    if image is None:
+
+        st.error("Unable to read the uploaded image.")
+
+    else:
+
+        with st.spinner("Running YOLOv8 detection..."):
+
+            predictions = model.predict(
+                source=image,
+                conf=0.25,
+                iou=0.50,
+                verbose=False
+            )
+
+        annotated_image = predictions[0].plot()
+
+        st.image(
+            cv2.cvtColor(
+                annotated_image,
+                cv2.COLOR_BGR2RGB
+            ),
+            caption="YOLOv8 Prediction",
+            use_container_width=True
+        )
