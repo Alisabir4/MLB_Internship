@@ -1,5 +1,3 @@
-path: .
-
 train: test100/images
 val: test100/images
 test: test100/images
