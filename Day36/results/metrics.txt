@@ -1,10 +1,4 @@
-YOLOv8 Model Performance Audit
-========================================
-
-Model: yolov8n.pt
-Evaluation Images: 100
-
-Precision: 0.3595
-Recall: 0.1244
-mAP@50: 0.0883
-mAP@50-95: 0.0513
+Precision : 0.3595
+Recall    : 0.1244
+mAP@50    : 0.0883
+mAP@50-95 : 0.0513

@@ -1,4 +1,4 @@
-path: .
+path: data.yaml
 
 train: test100/images
 val: test100/images
