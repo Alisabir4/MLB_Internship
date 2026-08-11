@@ -1,14 +1,9 @@
 import streamlit as st
 import os
-from ultralytics import YOLO
 
-st.set_page_config(
-    page_title="YOLO Model Performance Audit"
-)
+st.set_page_config(page_title="YOLO Model Performance Audit")
 
 st.title("YOLO Model Performance Audit")
-
-model = YOLO("yolov8n.pt")
 
 # Model Evaluation
 st.header("Model Evaluation")
@@ -43,23 +38,8 @@ uploaded = st.file_uploader(
 )
 
 if uploaded is not None:
-
-    from PIL import Image
-
-    image = Image.open(uploaded)
-
-    results = model.predict(
-        source=image,
-        conf=0.25,
-        iou=0.50,
-        verbose=False
-    )
-
-    annotated = results[0].plot()
-
     st.image(
-        annotated,
-        caption="YOLOv8 Prediction",
-        channels="BGR",
+        uploaded,
+        caption="Uploaded Challenging Example",
         use_container_width=True
     )
