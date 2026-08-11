@@ -94,34 +94,20 @@ if st.button("Run Evaluation"):
 
 st.header("Confusion Matrix")
 
-matrix_paths = [
-    "results/traffic_confusion_matrix.png",
-    "runs/detect/results/confusion_matrix.png",
-    "runs/detect/val/confusion_matrix.png",
-    "runs/detect/val2/confusion_matrix.png"
-]
+matrix_path = os.path.join(
+    BASE_DIR,
+    "results",
+    "traffic_confusion_matrix.png"
+)
 
-matrix_found = False
-
-for matrix_path in matrix_paths:
-
-    if os.path.exists(matrix_path):
-
-        st.image(
-            matrix_path,
-            caption="Confusion Matrix",
-            use_container_width=True
-        )
-
-        matrix_found = True
-        break
-
-if not matrix_found:
-
-    st.info(
-        "Run Evaluation to generate the confusion matrix."
+if os.path.exists(matrix_path):
+    st.image(
+        matrix_path,
+        caption="Traffic-200 Confusion Matrix",
+        use_container_width=True
     )
-
+else:
+    st.warning("Confusion matrix not found.")
 
 # -----------------------------
 # CHALLENGING EXAMPLES
