@@ -1,7 +1,5 @@
-ultralytics
-opencv-python-headless
 streamlit
-pandas
-numpy
-matplotlib
-seaborn
+ultralytics
+opencv-python-headless==4.10.0.84
+pillow
+numpy<2
