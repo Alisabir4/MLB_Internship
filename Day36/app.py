@@ -11,10 +11,13 @@ st.set_page_config(
 
 st.title("YOLO Model Performance Audit")
 
-MODEL_PATH = "yolov8n.pt"
-DATA_YAML = "data.yaml"
-RESULTS_DIR = "results"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+MODEL_PATH = os.path.join(BASE_DIR, "yolov8n.pt")
+DATA_YAML = os.path.join(BASE_DIR, "data.yaml")
+RESULTS_DIR = os.path.join(BASE_DIR, "results")
+IMAGE_DIR = os.path.join(BASE_DIR, "test100", "images")
+LABEL_DIR = os.path.join(BASE_DIR, "test100", "labels")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 model = YOLO(MODEL_PATH)
