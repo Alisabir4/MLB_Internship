@@ -78,7 +78,7 @@ st.header("Confusion Matrix")
 
 matrix_path = os.path.join(
     RESULT_DIR,
-    "traffic_confusion_matrix.png"
+    r"traffic_confusion_matrix.png"
 )
 
 if os.path.exists(matrix_path):
