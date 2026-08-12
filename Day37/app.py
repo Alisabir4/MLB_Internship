@@ -34,10 +34,7 @@ v1, v2 = load_models()
 # V1 VS V2 METRICS
 # --------------------------------------------------
 
-st.markdown(
-    "<h2 style='text-align: center;'>V1 vs V2 Performance</h2>",
-    unsafe_allow_html=True
-)
+st.header("V1 vs V2 Performance")
 
 metrics = {
     "Precision": [0.3595, 0.8041],
