@@ -12,12 +12,10 @@ st.set_page_config(
 st.title("🤖 YOLO Model Improvement")
 st.write("Model V1 → Data Improvement → Model V2")
 
-# --------------------------------------------------
-# MODEL PATHS
-# --------------------------------------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-V1_PATH = "yolov8n.pt"
-V2_PATH = "best.pt"
+V1_PATH = os.path.join(BASE_DIR, "yolov8n.pt")
+V2_PATH = os.path.join(BASE_DIR, "best.pt")
 
 # --------------------------------------------------
 # LOAD MODELS
