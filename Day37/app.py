@@ -18,9 +18,9 @@ V1_PATH = os.path.join(BASE_DIR, "yolov8n.pt")
 V2_PATH = os.path.join(BASE_DIR, "best.pt")
 COMPARISON_DIR = os.path.join(BASE_DIR, "comparison_examples")
 
-# --------------------------------------------------
+
 # LOAD MODELS
-# --------------------------------------------------
+
 
 @st.cache_resource
 def load_models():
@@ -30,9 +30,9 @@ def load_models():
 
 v1, v2 = load_models()
 
-# --------------------------------------------------
+
 # V1 VS V2 METRICS
-# --------------------------------------------------
+
 
 st.header("V1 vs V2 Performance")
 
@@ -59,10 +59,8 @@ with col2:
     st.metric("mAP@50", "0.4275")
     st.metric("mAP@50-95", "0.2724")
 
-# --------------------------------------------------
-# COMPARISON TABLE
-# --------------------------------------------------
 
+# COMPARISON TABLE
 st.header("Performance Comparison")
 
 st.table({
@@ -71,9 +69,8 @@ st.table({
     "V2": [0.8041, 0.4077, 0.4275, 0.2724]
 })
 
-# --------------------------------------------------
 # CLASS DISTRIBUTION
-# --------------------------------------------------
+
 
 st.header("Original Class Distribution")
 
@@ -103,9 +100,8 @@ st.write(
     "Augmentation was applied to improve the training data."
 )
 
-# --------------------------------------------------
 # AUGMENTATION
-# --------------------------------------------------
+
 
 st.header("Data Improvement")
 
@@ -119,9 +115,8 @@ The V2 model was trained after improving the training data.
 - YOLOv8 Nano was retrained for 20 epochs.
 """)
 
-# --------------------------------------------------
+
 # FIVE COMPARISON EXAMPLES
-# --------------------------------------------------
 
 st.header("5 V2 Comparison Examples")
 
@@ -155,10 +150,7 @@ if os.path.exists(COMPARISON_DIR):
 else:
     st.warning("comparison_examples folder not found.")
 
-# --------------------------------------------------
 # LIVE IMAGE COMPARISON
-# --------------------------------------------------
-
 st.header("Live V1 vs V2 Prediction")
 
 uploaded = st.file_uploader(
@@ -208,9 +200,8 @@ if uploaded:
             use_container_width=True
         )
 
-# --------------------------------------------------
 # CONCLUSION
-# --------------------------------------------------
+
 
 st.header("Conclusion")
 
