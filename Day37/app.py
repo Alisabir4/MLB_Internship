@@ -124,7 +124,7 @@ The V2 model was trained after improving the training data.
 
 st.header("5 V2 Comparison Examples")
 
-example_dir = "comparison_examples"
+example_dir = r"comparison_examples"
 
 if os.path.exists(example_dir):
 
