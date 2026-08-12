@@ -16,6 +16,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 V1_PATH = os.path.join(BASE_DIR, "yolov8n.pt")
 V2_PATH = os.path.join(BASE_DIR, "best.pt")
+COMPARISON_DIR = os.path.join(BASE_DIR, "comparison_examples")
 
 # --------------------------------------------------
 # LOAD MODELS
@@ -124,12 +125,12 @@ The V2 model was trained after improving the training data.
 
 st.header("5 V2 Comparison Examples")
 
-example_dir = "comparison_examples"
+COMPARISON_DIR = os.path.join(BASE_DIR, "comparison_examples")
 
-if os.path.exists(example_dir):
+if os.path.exists(COMPARISON_DIR):
 
     examples = [
-        f for f in os.listdir(example_dir)
+        f for f in os.listdir(COMPARISON_DIR)
         if f.lower().endswith((".jpg", ".jpeg", ".png"))
     ]
 
@@ -141,7 +142,7 @@ if os.path.exists(example_dir):
         for i, file in enumerate(examples):
             with cols[i]:
                 image = Image.open(
-                    os.path.join(example_dir, file)
+                    os.path.join(COMPARISON_DIR, file)
                 )
                 st.image(
                     image,
