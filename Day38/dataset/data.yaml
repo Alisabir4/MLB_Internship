@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 2
+names: ['black', 'white']
+
+roboflow:
+  workspace: alis-workspace-20nni
+  project: cup-detection-lugmb
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/alis-workspace-20nni/cup-detection-lugmb/dataset/1

@@ -1,0 +1,6 @@
+train: train/images
+val: ../dataset/valid/images
+test: ../dataset/test/images
+
+nc: 2
+names: ['black', 'white']
