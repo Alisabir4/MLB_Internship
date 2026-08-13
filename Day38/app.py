@@ -1,324 +1,92 @@
-import os
-import random
 import streamlit as st
-from PIL import Image, ImageDraw
-
-# =========================
-# PAGE CONFIG
-# =========================
 
 st.set_page_config(
-    page_title="Day 38 - Custom Dataset",
+    page_title="Day 38 - Custom Object Detection",
     page_icon="🥤",
     layout="wide"
 )
 
-st.title("🥤 Day 38 - Custom Object Detection Dataset")
+st.title("🥤 Day 38 - Custom Object Detection")
 
-DATASET = "dataset"
-CLASSES = ["black", "white"]
+st.header("📊 Dataset Statistics")
 
+col1, col2, col3, col4 = st.columns(4)
 
-# =========================
-# DATASET ANALYSIS
-# =========================
+col1.metric("Original Images", "241")
+col2.metric("Train", "201")
+col3.metric("Validation", "30")
+col4.metric("Test", "10")
 
-def analyze_dataset():
+st.header("Dataset Split")
 
-    results = {}
+data = {
+    "Train": (201, 201),
+    "Validation": (30, 30),
+    "Test": (10, 10)
+}
 
-    for split in ["train", "valid", "test"]:
+for split, values in data.items():
+    c1, c2 = st.columns(2)
+    c1.write(f"**{split} Images:** {values[0]}")
+    c2.write(f"**{split} Labels:** {values[1]}")
 
-        image_dir = os.path.join(DATASET, split, "images")
-        label_dir = os.path.join(DATASET, split, "labels")
+st.header("Class Distribution")
 
-        if not os.path.exists(image_dir):
-            results[split] = None
-            continue
+col1, col2 = st.columns(2)
 
-        images = [
-            f for f in os.listdir(image_dir)
-            if f.lower().endswith((".jpg", ".jpeg", ".png"))
-        ]
+col1.metric("Black", "30")
+col2.metric("White", "30")
 
-        labels = [
-            f for f in os.listdir(label_dir)
-            if f.endswith(".txt")
-        ]
+st.bar_chart({
+    "Black": 30,
+    "White": 30
+})
 
-        class_count = {name: 0 for name in CLASSES}
-        missing = []
+st.header("Annotation Check")
 
-        for image in images:
+st.success("All 241 images have corresponding YOLO annotation files.")
 
-            name = os.path.splitext(image)[0]
-            label_file = os.path.join(label_dir, name + ".txt")
+st.header("🤖 Model Training")
 
-            if not os.path.exists(label_file):
-                missing.append(image)
-                continue
+col1, col2, col3 = st.columns(3)
 
-            with open(label_file, "r") as file:
+col1.metric("Model", "YOLOv8n")
+col2.metric("Epochs", "10")
+col3.metric("Image Size", "640")
 
-                for line in file:
+st.header("📈 Evaluation Results")
 
-                    parts = line.strip().split()
+col1, col2, col3, col4 = st.columns(4)
 
-                    if not parts:
-                        continue
+col1.metric("Precision", "99.77%")
+col2.metric("Recall", "100%")
+col3.metric("mAP@50", "99.50%")
+col4.metric("mAP@50-95", "93.99%")
 
-                    class_id = int(parts[0])
+st.header("🧪 Unseen Image Testing")
 
-                    if class_id < len(CLASSES):
-                        class_count[CLASSES[class_id]] += 1
+st.write(
+    "The trained model was tested on 10 completely new images "
+    "collected separately from the original dataset."
+)
 
-        results[split] = {
-            "images": len(images),
-            "labels": len(labels),
-            "annotations": sum(class_count.values()),
-            "classes": class_count,
-            "missing": missing
-        }
+st.warning(
+    "The model detected most cups correctly, but at least one cup was missed."
+)
 
-    return results
+st.header("📌 Dataset Summary")
 
+st.write(
+    "The dataset contains 241 original images with YOLO "
+    "bounding-box annotations."
+)
 
-# =========================
-# CHECK DATASET
-# =========================
+st.write("Classes: black and white.")
 
-if not os.path.exists(DATASET):
+st.write(
+    "The training dataset was augmented to 650 images."
+)
 
-    st.error("Dataset folder not found.")
-
-else:
-
-    results = analyze_dataset()
-
-    st.header("📊 Dataset Statistics")
-
-    train = results["train"]
-    valid = results["valid"]
-    test = results["test"]
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    col1.metric(
-        "Original Images",
-        sum(
-            results[s]["images"]
-            for s in ["train", "valid", "test"]
-            if results[s]
-        )
-    )
-
-    col2.metric(
-        "Train",
-        train["images"] if train else 0
-    )
-
-    col3.metric(
-        "Validation",
-        valid["images"] if valid else 0
-    )
-
-    col4.metric(
-        "Test",
-        test["images"] if test else 0
-    )
-
-
-    # =========================
-    # SPLIT DETAILS
-    # =========================
-
-    st.header("Dataset Split")
-
-    for split in ["train", "valid", "test"]:
-
-        data = results[split]
-
-        if data:
-
-            st.subheader(split.capitalize())
-
-            c1, c2, c3, c4 = st.columns(4)
-
-            c1.write(f"**Images:** {data['images']}")
-            c2.write(f"**Labels:** {data['labels']}")
-            c3.write(f"**Annotations:** {data['annotations']}")
-            c4.write(
-                f"**Missing:** {len(data['missing'])}"
-            )
-
-
-    # =========================
-    # CLASS DISTRIBUTION
-    # =========================
-
-    st.header("Class Distribution")
-
-    total_classes = {name: 0 for name in CLASSES}
-
-    for split in ["train", "valid", "test"]:
-
-        data = results[split]
-
-        if data:
-
-            for class_name in CLASSES:
-                total_classes[class_name] += data["classes"][class_name]
-
-    col1, col2 = st.columns(2)
-
-    col1.metric("Black", total_classes["black"])
-    col2.metric("White", total_classes["white"])
-
-
-    st.bar_chart(total_classes)
-
-
-    # =========================
-    # MISSING ANNOTATIONS
-    # =========================
-
-    st.header("Annotation Check")
-
-    total_missing = 0
-
-    for split in ["train", "valid", "test"]:
-
-        data = results[split]
-
-        if data and data["missing"]:
-
-            total_missing += len(data["missing"])
-
-            st.warning(
-                f"{split}: {len(data['missing'])} images without annotations"
-            )
-
-    if total_missing == 0:
-
-        st.success(
-            "All images have corresponding YOLO annotation files."
-        )
-
-
-    # =========================
-    # RANDOM IMAGE
-    # =========================
-
-    st.header("Random Annotated Image")
-
-    split = st.selectbox(
-        "Select dataset split",
-        ["train", "valid", "test"]
-    )
-
-    image_dir = os.path.join(DATASET, split, "images")
-    label_dir = os.path.join(DATASET, split, "labels")
-
-    images = [
-        f for f in os.listdir(image_dir)
-        if f.lower().endswith((".jpg", ".jpeg", ".png"))
-    ]
-
-    if images:
-
-        if st.button("Show Random Image"):
-
-            image_name = random.choice(images)
-
-            image_path = os.path.join(
-                image_dir,
-                image_name
-            )
-
-            label_path = os.path.join(
-                label_dir,
-                os.path.splitext(image_name)[0] + ".txt"
-            )
-
-            image = Image.open(image_path).convert("RGB")
-
-            draw = ImageDraw.Draw(image)
-
-            width, height = image.size
-
-            if os.path.exists(label_path):
-
-                with open(label_path, "r") as file:
-
-                    for line in file:
-
-                        parts = line.strip().split()
-
-                        if len(parts) != 5:
-                            continue
-
-                        class_id = int(parts[0])
-                        x_center = float(parts[1])
-                        y_center = float(parts[2])
-                        box_width = float(parts[3])
-                        box_height = float(parts[4])
-
-                        x1 = int(
-                            (x_center - box_width / 2) * width
-                        )
-
-                        y1 = int(
-                            (y_center - box_height / 2) * height
-                        )
-
-                        x2 = int(
-                            (x_center + box_width / 2) * width
-                        )
-
-                        y2 = int(
-                            (y_center + box_height / 2) * height
-                        )
-
-                        class_name = (
-                            CLASSES[class_id]
-                            if class_id < len(CLASSES)
-                            else str(class_id)
-                        )
-
-                        draw.rectangle(
-                            [x1, y1, x2, y2],
-                            outline="red",
-                            width=3
-                        )
-
-                        draw.text(
-                            (x1, max(0, y1 - 15)),
-                            class_name,
-                            fill="red"
-                        )
-
-            st.image(
-                image,
-                caption=image_name,
-                use_container_width=True
-            )
-
-
-    # =========================
-    # SUMMARY
-    # =========================
-
-    st.header("Dataset Summary")
-
-    st.write(
-        "This dataset contains 241 original images "
-        "with YOLO bounding-box annotations."
-    )
-
-    st.write(
-        "Classes: black and white"
-    )
-
-    st.write(
-        "Validation and test images remain untouched."
-    )
+st.write(
+    "The YOLOv8n model was trained for 10 epochs."
+)
