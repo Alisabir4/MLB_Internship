@@ -304,14 +304,19 @@ else:
             )
 
 # =========================
-# UNSEEN IMAGES
+# UNSEEN PREDICTIONS
 # =========================
 
-st.header("🆕 Unseen Image Testing")
+from ultralytics import YOLO
+
+st.header("🆕 Unseen Image Predictions")
 
 UNSEEN_DIR = "unseen_test/images"
+MODEL_PATH = "best.pt"
 
-if os.path.exists(UNSEEN_DIR):
+if os.path.exists(UNSEEN_DIR) and os.path.exists(MODEL_PATH):
+
+    model = YOLO(MODEL_PATH)
 
     unseen_images = [
         f for f in os.listdir(UNSEEN_DIR)
@@ -320,31 +325,26 @@ if os.path.exists(UNSEEN_DIR):
 
     st.write(f"Unseen images: {len(unseen_images)}")
 
-    if unseen_images:
+    for image_name in unseen_images:
 
-        cols = st.columns(3)
+        image_path = os.path.join(UNSEEN_DIR, image_name)
 
-        for i, image_name in enumerate(unseen_images):
+        results = model.predict(
+            source=image_path,
+            conf=0.25,
+            verbose=False
+        )
 
-            image_path = os.path.join(
-                UNSEEN_DIR,
-                image_name
-            )
+        result_image = results[0].plot()
 
-            image = Image.open(image_path)
-
-            with cols[i % 3]:
-                st.image(
-                    image,
-                    caption=image_name,
-                    use_container_width=True
-                )
-
-    else:
-        st.warning("No unseen images found.")
+        st.image(
+            result_image,
+            caption=f"Prediction: {image_name}",
+            use_container_width=True
+        )
 
 else:
-    st.warning("Unseen images folder not found.")
+    st.warning("Model or unseen images folder not found.")
     # =========================
     # SUMMARY
     # =========================
