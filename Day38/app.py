@@ -303,7 +303,48 @@ else:
                 use_container_width=True
             )
 
+# =========================
+# UNSEEN IMAGES
+# =========================
 
+st.header("🆕 Unseen Image Testing")
+
+UNSEEN_DIR = "unseen_test/images"
+
+if os.path.exists(UNSEEN_DIR):
+
+    unseen_images = [
+        f for f in os.listdir(UNSEEN_DIR)
+        if f.lower().endswith((".jpg", ".jpeg", ".png"))
+    ]
+
+    st.write(f"Unseen images: {len(unseen_images)}")
+
+    if unseen_images:
+
+        cols = st.columns(3)
+
+        for i, image_name in enumerate(unseen_images):
+
+            image_path = os.path.join(
+                UNSEEN_DIR,
+                image_name
+            )
+
+            image = Image.open(image_path)
+
+            with cols[i % 3]:
+                st.image(
+                    image,
+                    caption=image_name,
+                    use_container_width=True
+                )
+
+    else:
+        st.warning("No unseen images found.")
+
+else:
+    st.warning("Unseen images folder not found.")
     # =========================
     # SUMMARY
     # =========================
