@@ -20,7 +20,10 @@ st.set_page_config(
 # LOAD MODEL
 # =========================================================
 
-MODEL_PATH = "best.pt"
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "best.pt")
 
 @st.cache_resource
 def load_model():
