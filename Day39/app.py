@@ -395,12 +395,3 @@ with tab3:
         """
     )
 
-# =========================================================
-# FOOTER
-# =========================================================
-
-st.markdown("---")
-
-st.caption(
-    "Day 39 | Custom Computer Vision Project | YOLOv8 Cup Detection"
-)
