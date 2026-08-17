@@ -265,37 +265,138 @@ with tab2:
 
     if uploaded_video is not None:
 
-        temp_input = tempfile.NamedTemporaryFile(
+        # Save uploaded video temporarily
+        input_path = tempfile.NamedTemporaryFile(
             delete=False,
             suffix=".mp4"
+        ).name
+
+        with open(input_path, "wb") as f:
+            f.write(uploaded_video.getbuffer())
+
+        # Output directory
+        output_dir = os.path.join(
+            BASE_DIR,
+            "outputs"
         )
 
-        temp_input.write(
-            uploaded_video.read()
+        os.makedirs(
+            output_dir,
+            exist_ok=True
         )
 
-        temp_input.close()
-
-        st.info(
-            "Processing video. This may take some time..."
+        output_path = os.path.join(
+            output_dir,
+            "predicted_video.mp4"
         )
+
+        st.info("Processing video... Please wait.")
 
         try:
 
-            results = model.predict(
-                source=temp_input.name,
-                conf=confidence,
-                save=True,
-                verbose=False
+            cap = cv2.VideoCapture(input_path)
+
+            width = int(
+                cap.get(cv2.CAP_PROP_FRAME_WIDTH)
             )
 
-            # Ultralytics saves prediction in runs/detect
+            height = int(
+                cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+            )
+
+            fps = cap.get(
+                cv2.CAP_PROP_FPS
+            )
+
+            if fps <= 0:
+                fps = 25
+
+            fourcc = cv2.VideoWriter_fourcc(
+                *"mp4v"
+            )
+
+            writer = cv2.VideoWriter(
+                output_path,
+                fourcc,
+                fps,
+                (width, height)
+            )
+
+            frame_count = 0
+            total_detections = 0
+
+            while True:
+
+                ret, frame = cap.read()
+
+                if not ret:
+                    break
+
+                results = model.predict(
+                    source=frame,
+                    conf=confidence,
+                    verbose=False
+                )
+
+                result = results[0]
+
+                annotated_frame = result.plot()
+
+                writer.write(
+                    annotated_frame
+                )
+
+                if result.boxes is not None:
+                    total_detections += len(
+                        result.boxes
+                    )
+
+                frame_count += 1
+
+            cap.release()
+            writer.release()
+
             st.success(
-                "Video processing completed."
+                "✅ Video processing completed!"
             )
 
-            st.info(
-                "The processed video was generated successfully."
+            # Show statistics
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.metric(
+                    "Frames Processed",
+                    frame_count
+                )
+
+            with col2:
+                st.metric(
+                    "Total Cup Detections",
+                    total_detections
+                )
+
+            # Display video
+            st.subheader(
+                "🎬 Prediction Result"
+            )
+
+            with open(
+                output_path,
+                "rb"
+            ) as video_file:
+
+                video_bytes = video_file.read()
+
+            st.video(
+                video_bytes
+            )
+
+            # Download button
+            st.download_button(
+                label="⬇️ Download Prediction Video",
+                data=video_bytes,
+                file_name="predicted_cup_video.mp4",
+                mime="video/mp4"
             )
 
         except Exception as e:
@@ -307,10 +408,10 @@ with tab2:
         finally:
 
             if os.path.exists(
-                temp_input.name
+                input_path
             ):
                 os.remove(
-                    temp_input.name
+                    input_path
                 )
 
 # =========================================================
