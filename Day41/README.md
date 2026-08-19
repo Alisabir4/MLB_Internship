@@ -82,6 +82,8 @@ Example response:
   ],
   "total": 1
 }
+
+
 POST /api/predict/image
 
 Accepts an image, performs YOLO inference, draws bounding boxes, and returns the processed image.
