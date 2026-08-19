@@ -10,11 +10,6 @@ The project demonstrates how to connect a trained YOLO object-detection model wi
 
 https://fastapi-day41.onrender.com/docs
 
-**Render API:**
-
-https://fastapi-day41.onrender.com
-
----
 
 ## 📌 Project Overview
 
