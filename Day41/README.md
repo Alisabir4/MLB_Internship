@@ -1,23 +1,37 @@
-# Day 41 - Custom YOLO Prediction API
+# Day 41 - FastAPI YOLO Prediction API
 
 ## Project Overview
+Built an AI-powered REST API using FastAPI and a trained YOLO cup detection model.
 
-This project integrates a custom YOLO object detection model with FastAPI.
+## Features
+- FastAPI REST API
+- YOLO cup detection
+- Image upload and prediction
+- Confidence scores
+- Swagger/OpenAPI documentation
+- Render deployment
 
-The trained YOLO model (`best.pt`) detects cups and is exposed through REST API endpoints.
+## API Endpoints
 
-The API allows another application to upload an image and receive YOLO prediction results.
+POST /api/predict
+- Upload an image and receive cup detection results.
 
-## Technologies Used
+POST /api/predict/image
+- Upload an image and receive prediction output.
 
+## Technologies
 - Python
 - FastAPI
-- Uvicorn
-- Ultralytics YOLO
-- OpenCV
-- Pillow
+- YOLO / Ultralytics
 - Pydantic
+- Uvicorn
+- Render
 
+## Live API
+https://fastapi-day41.onrender.com/docs
+
+## GitHub
+https://github.com/Alisabir4/MLB_Internship
 ## Model
 
 The custom YOLO model is stored at:
