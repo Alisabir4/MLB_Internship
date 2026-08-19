@@ -1,34 +1,30 @@
-# Virtual Environment
+@"
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
 venv/
 .venv/
-env/
-ENV/
 
-# Python cache
-__pycache__/
-*.py[cod]
-
-# Environment variables
-.env
-
-# IDE
-.vscode/
-.idea/
-
-# YOLO generated files
+# Generated files
+output/
+outputs/
+uploads/
 runs/
-**/runs/
-
-# Generated output images
-outputs/*
+*.mp4
+*.avi
+*.mov
+*.mkv
 
 # Temporary files
 *.tmp
-*.temp
-
-# Logs
 *.log
+git-files.txt
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
+"@ | Set-Content ..\.gitignore
