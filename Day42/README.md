@@ -1,100 +1,65 @@
-# Day 42 — AI Video Processing API with FastAPI + YOLO
+Day 42 — AI Video Processing API with FastAPI + YOLO
+Overview
 
-## Overview
+Day 42 focused on extending the previous FastAPI + YOLO image API to support video processing and background tasks.
 
-Day 42 focuses on extending the FastAPI + YOLO image prediction API into an AI-powered video processing backend.
+The API accepts a video, creates a unique job_id, processes the video frame-by-frame using YOLO, tracks progress, saves the processed video, and provides the result for download.
 
-The API accepts video files, creates a unique job ID, processes the video in the background using YOLO, tracks processing progress, saves the processed video, and provides the final result for download.
-
-## Project Workflow
-
-```text
+Workflow
 Client
-   │
-   ▼
+  ↓
 Upload Video
-   │
-   ▼
-Job Created
-   │
-   ▼
-Job ID Returned
-   │
-   ▼
+  ↓
+Job ID Created
+  ↓
 Background Processing
-   │
-   ▼
-YOLO Frame-by-Frame Detection
-   │
-   ▼
-Draw Bounding Boxes
-   │
-   ▼
-Save Processed Video
-   │
-   ▼
-Processing Completed
-   │
-   ▼
+  ↓
+YOLO Detection
+  ↓
+Processed Video
+  ↓
+Completed
+  ↓
 Download Result
-
 Features
-Video file upload
-Video format validation
-Unique job ID generation
-Background video processing
+Video upload and validation
 Frame-by-frame YOLO detection
-Bounding boxes
-Class names
-Confidence scores
-Frame number display
-Processing progress tracking
+Bounding boxes, class names, and confidence
+Frame/progress tracking
+Background processing
+Unique job IDs
 Processed video generation
-Video result download
 Processing statistics
 Error handling
-Swagger/OpenAPI documentation
-Technologies Used
+Swagger API documentation
+Technologies
 Python
 FastAPI
 Uvicorn
 Ultralytics YOLO
 OpenCV
-Pydantic
-Python Multipart
+PyTorch
 Project Structure
-Day-42/
-│
+Day42/
 ├── app/
-│   ├── __init__.py
 │   ├── main.py
-│   │
 │   ├── routes/
-│   │   ├── __init__.py
 │   │   └── video.py
-│   │
 │   ├── services/
-│   │   ├── __init__.py
 │   │   ├── detector.py
 │   │   └── video_processor.py
-│   │
 │   └── utils/
-│       ├── __init__.py
 │       └── file_utils.py
-│
 ├── models/
 │   └── best.pt
-│
 ├── uploads/
 ├── outputs/
 ├── requirements.txt
 ├── README.md
 └── .gitignore
 API Endpoints
-1. Process Video
+Process Video
 POST /video/process
-
-Uploads a video and starts background processing.
 
 Example response:
 
@@ -102,20 +67,10 @@ Example response:
   "job_id": "21372020661b",
   "status": "processing"
 }
-2. Check Processing Status
+Check Status
 GET /video/status/{job_id}
 
-Returns the current processing status and progress.
-
 Example:
-
-{
-  "job_id": "21372020661b",
-  "status": "processing",
-  "progress": 62
-}
-
-When processing is completed:
 
 {
   "job_id": "21372020661b",
@@ -129,51 +84,113 @@ When processing is completed:
     "processing_time": 49.44
   }
 }
-
-Update the detection value above with the final successful detection result if it changes during testing.
-
-3. Download Processed Video
+Download Result
 GET /video/result/{job_id}
 
-Returns the processed video after YOLO processing is complete.
+Returns the processed video when processing is complete.
 
 If processing is still running:
 
 {
   "detail": "Video is still being processed."
 }
-
-HTTP status:
-
-202
 Video Processing
 
-The uploaded video is opened using OpenCV.
+Each frame is processed using YOLO:
 
-Each frame is processed individually:
-
-Video
-  ↓
 Read Frame
-  ↓
+   ↓
 YOLO Detection
-  ↓
-Draw Bounding Boxes
-  ↓
-Add Class + Confidence
-  ↓
-Add Frame Information
-  ↓
+   ↓
+Draw Bounding Box
+   ↓
+Class + Confidence
+   ↓
 Write Frame
-  ↓
-Next Frame
-
-The final frames are written into a new processed video file.
-
 Background Processing
 
-Video inference can take significantly longer than a normal API request, especially when processing hundreds or thousands of frames.
+Background processing prevents the API request from waiting for the entire video inference task.
 
-The API therefore uses FastAPI background tasks.
+Upload → Job ID → Processing → Status → Completed → Result
+Testing
 
-Instead of waiting for the entire video to finish, the API immediately returns a job ID.
+The API was tested using Swagger UI.
+
+Test 1 — Short Cup Video
+Status: Completed
+Total Frames: 269
+Processed Frames: 269
+Total Detections: 0
+Average FPS: 5.44
+Processing Time: 49.44 sec
+Test 2 — Longer Video
+Status: Completed
+Total Frames: [Add Result]
+Total Detections: [Add Result]
+Average FPS: [Add Result]
+Processing Time: [Add Result]
+Test 3 — Multiple Object Video
+Status: Completed
+Total Frames: [Add Result]
+Total Detections: [Add Result]
+Average FPS: [Add Result]
+Processing Time: [Add Result]
+Error Handling
+
+The API handles:
+
+Invalid file type
+Missing file
+Empty video
+Corrupted video
+Unsupported format
+Unknown job ID
+Processing failure
+Result requested before completion
+Problems Faced
+Long Processing Time
+
+Video processing takes longer because YOLO processes every frame.
+
+Solution: Implemented background processing and job IDs.
+
+Progress Tracking
+
+The user needs to know the current processing state.
+
+Solution: Added progress tracking based on processed frames.
+
+Result Before Completion
+
+The output video is unavailable while processing.
+
+Solution: The result endpoint returns HTTP 202 until processing completes.
+
+Run Locally
+
+Create and activate the virtual environment:
+
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+Run the API:
+
+uvicorn app.main:app --reload
+
+Swagger:
+
+http://127.0.0.1:8000/docs
+Learning Outcomes
+FastAPI video uploads
+OpenCV video processing
+YOLO video inference
+Background tasks
+Job ID management
+Progress tracking
+Processed video generation
+API error handling
+Video-processing performance statistics
