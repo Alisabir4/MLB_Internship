@@ -1,0 +1,75 @@
+{"timestamp": "2026-08-21 11:47:09", "level": "INFO", "message": "Request started | request_id=req_79691026d4d4 method=GET path=/health"}
+{"timestamp": "2026-08-21 11:47:09", "level": "INFO", "message": "Request completed | request_id=req_79691026d4d4 status_code=200 processing_time=0.015s"}
+{"timestamp": "2026-08-21 11:47:12", "level": "INFO", "message": "Request started | request_id=req_1635860edbef method=GET path=/favicon.ico"}
+{"timestamp": "2026-08-21 11:47:12", "level": "INFO", "message": "Request completed | request_id=req_1635860edbef status_code=404 processing_time=0.002s"}
+{"timestamp": "2026-08-21 11:49:11", "level": "INFO", "message": "Request started | request_id=req_3ac22470aa1a method=GET path=/docs"}
+{"timestamp": "2026-08-21 11:49:11", "level": "INFO", "message": "Request completed | request_id=req_3ac22470aa1a status_code=200 processing_time=0.006s"}
+{"timestamp": "2026-08-21 11:49:13", "level": "INFO", "message": "Request started | request_id=req_2fbcb78a3276 method=GET path=/openapi.json"}
+{"timestamp": "2026-08-21 11:49:13", "level": "INFO", "message": "Request completed | request_id=req_2fbcb78a3276 status_code=200 processing_time=0.04s"}
+{"timestamp": "2026-08-21 11:55:28", "level": "INFO", "message": "Request started | request_id=req_63abfa19c993 method=GET path=/docs"}
+{"timestamp": "2026-08-21 11:55:28", "level": "INFO", "message": "Request completed | request_id=req_63abfa19c993 status_code=200 processing_time=0.001s"}
+{"timestamp": "2026-08-21 11:55:30", "level": "INFO", "message": "Request started | request_id=req_50bc5e9aae29 method=GET path=/openapi.json"}
+{"timestamp": "2026-08-21 11:55:30", "level": "INFO", "message": "Request completed | request_id=req_50bc5e9aae29 status_code=200 processing_time=0.049s"}
+{"timestamp": "2026-08-21 12:00:24", "level": "INFO", "message": "Request started | request_id=req_e49ae73e73db method=POST path=/video/process"}
+{"timestamp": "2026-08-21 12:00:24", "level": "INFO", "message": "Video upload received | job_id=bcbc803b4020"}
+{"timestamp": "2026-08-21 12:00:24", "level": "INFO", "message": "Job queued | job_id=bcbc803b4020 file_size=7014251 confidence=0.4"}
+{"timestamp": "2026-08-21 12:00:24", "level": "INFO", "message": "Request completed | request_id=req_e49ae73e73db status_code=200 processing_time=0.225s"}
+{"timestamp": "2026-08-21 12:00:24", "level": "INFO", "message": "Job started | job_id=bcbc803b4020 confidence=0.4"}
+{"timestamp": "2026-08-21 12:00:24", "level": "INFO", "message": "Video processing started | job_id=bcbc803b4020 confidence=0.4"}
+{"timestamp": "2026-08-21 12:00:51", "level": "INFO", "message": "Request started | request_id=req_1768ac557324 method=GET path=/video/status/bcbc803b4020"}
+{"timestamp": "2026-08-21 12:00:51", "level": "INFO", "message": "Request completed | request_id=req_1768ac557324 status_code=200 processing_time=0.006s"}
+{"timestamp": "2026-08-21 12:01:01", "level": "INFO", "message": "Request started | request_id=req_2deb53d98114 method=GET path=/video/result/bcbc803b4020"}
+{"timestamp": "2026-08-21 12:01:01", "level": "WARNING", "message": "HTTP error | request_id=req_2deb53d98114 status_code=202 error=Video is still being processed."}
+{"timestamp": "2026-08-21 12:01:01", "level": "INFO", "message": "Request completed | request_id=req_2deb53d98114 status_code=202 processing_time=0.011s"}
+{"timestamp": "2026-08-21 12:01:10", "level": "INFO", "message": "Request started | request_id=req_282371992ded method=GET path=/"}
+{"timestamp": "2026-08-21 12:01:10", "level": "INFO", "message": "Request completed | request_id=req_282371992ded status_code=200 processing_time=0.003s"}
+{"timestamp": "2026-08-21 12:01:21", "level": "INFO", "message": "Request started | request_id=req_3be1d787ea8a method=GET path=/health"}
+{"timestamp": "2026-08-21 12:01:21", "level": "INFO", "message": "Request completed | request_id=req_3be1d787ea8a status_code=200 processing_time=0.002s"}
+{"timestamp": "2026-08-21 12:01:33", "level": "INFO", "message": "Request started | request_id=req_35972065e141 method=GET path=/video/result/bcbc803b4020"}
+{"timestamp": "2026-08-21 12:01:33", "level": "WARNING", "message": "HTTP error | request_id=req_35972065e141 status_code=202 error=Video is still being processed."}
+{"timestamp": "2026-08-21 12:01:33", "level": "INFO", "message": "Request completed | request_id=req_35972065e141 status_code=202 processing_time=0.004s"}
+{"timestamp": "2026-08-21 12:02:46", "level": "INFO", "message": "Request started | request_id=req_f2c598220dbd method=GET path=/video/result/bcbc803b4020"}
+{"timestamp": "2026-08-21 12:02:46", "level": "WARNING", "message": "HTTP error | request_id=req_f2c598220dbd status_code=202 error=Video is still being processed."}
+{"timestamp": "2026-08-21 12:02:46", "level": "INFO", "message": "Request completed | request_id=req_f2c598220dbd status_code=202 processing_time=0.0s"}
+{"timestamp": "2026-08-21 12:02:55", "level": "INFO", "message": "Video processing completed | job_id=bcbc803b4020 frames=442 detections=271 processing_time=150.8s"}
+{"timestamp": "2026-08-21 12:02:55", "level": "INFO", "message": "Processing completed | job_id=bcbc803b4020 processing_time=150.799s"}
+{"timestamp": "2026-08-21 12:05:56", "level": "INFO", "message": "Request started | request_id=req_c917fc1562ae method=GET path=/video/result/bcbc803b4020"}
+{"timestamp": "2026-08-21 12:05:56", "level": "WARNING", "message": "HTTP error | request_id=req_c917fc1562ae status_code=404 error=Job ID not found."}
+{"timestamp": "2026-08-21 12:05:56", "level": "INFO", "message": "Request completed | request_id=req_c917fc1562ae status_code=404 processing_time=0.018s"}
+{"timestamp": "2026-08-21 12:06:00", "level": "INFO", "message": "Request started | request_id=req_d696f42ee802 method=GET path=/video/result/bcbc803b4020"}
+{"timestamp": "2026-08-21 12:06:00", "level": "WARNING", "message": "HTTP error | request_id=req_d696f42ee802 status_code=404 error=Job ID not found."}
+{"timestamp": "2026-08-21 12:06:00", "level": "INFO", "message": "Request completed | request_id=req_d696f42ee802 status_code=404 processing_time=0.006s"}
+{"timestamp": "2026-08-21 13:47:27", "level": "INFO", "message": "Request started | request_id=req_278193cda637 method=GET path=/video/status/bcbc803b4020"}
+{"timestamp": "2026-08-21 13:47:27", "level": "WARNING", "message": "HTTP error | request_id=req_278193cda637 status_code=404 error=Job ID not found."}
+{"timestamp": "2026-08-21 13:47:27", "level": "INFO", "message": "Request completed | request_id=req_278193cda637 status_code=404 processing_time=0.012s"}
+{"timestamp": "2026-08-21 13:53:33", "level": "INFO", "message": "Request started | request_id=req_5ff14beae3e2 method=GET path=/docs"}
+{"timestamp": "2026-08-21 13:53:33", "level": "INFO", "message": "Request completed | request_id=req_5ff14beae3e2 status_code=200 processing_time=0.007s"}
+{"timestamp": "2026-08-21 13:53:34", "level": "INFO", "message": "Request started | request_id=req_4db7d500bb9d method=GET path=/openapi.json"}
+{"timestamp": "2026-08-21 13:53:34", "level": "INFO", "message": "Request completed | request_id=req_4db7d500bb9d status_code=200 processing_time=0.044s"}
+{"timestamp": "2026-08-21 13:53:53", "level": "INFO", "message": "Request started | request_id=req_65f912075fc6 method=POST path=/video/process"}
+{"timestamp": "2026-08-21 13:53:53", "level": "INFO", "message": "Video upload received | request_id=req_65f912075fc6 job_id=4dd52bec0f34"}
+{"timestamp": "2026-08-21 13:53:53", "level": "INFO", "message": "Job queued | request_id=req_65f912075fc6 job_id=4dd52bec0f34 file_size=7014251 confidence=0.4"}
+{"timestamp": "2026-08-21 13:53:53", "level": "INFO", "message": "Request completed | request_id=req_65f912075fc6 status_code=200 processing_time=0.188s"}
+{"timestamp": "2026-08-21 13:53:53", "level": "INFO", "message": "Job started | job_id=4dd52bec0f34 confidence=0.4"}
+{"timestamp": "2026-08-21 13:53:53", "level": "INFO", "message": "Video processing started | job_id=4dd52bec0f34 confidence=0.4"}
+{"timestamp": "2026-08-21 13:54:08", "level": "INFO", "message": "Request started | request_id=req_370a88d03dcb method=GET path=/video/status/4dd52bec0f34"}
+{"timestamp": "2026-08-21 13:54:08", "level": "INFO", "message": "Request completed | request_id=req_370a88d03dcb status_code=200 processing_time=0.007s"}
+{"timestamp": "2026-08-21 13:54:22", "level": "INFO", "message": "Request started | request_id=req_bb9a1a7bebde method=GET path=/video/result/4dd52bec0f34"}
+{"timestamp": "2026-08-21 13:54:22", "level": "WARNING", "message": "HTTP error | request_id=req_bb9a1a7bebde status_code=202 error=Video is still being processed."}
+{"timestamp": "2026-08-21 13:54:22", "level": "INFO", "message": "Request completed | request_id=req_bb9a1a7bebde status_code=202 processing_time=0.009s"}
+{"timestamp": "2026-08-21 13:56:29", "level": "INFO", "message": "Video processing completed | job_id=4dd52bec0f34 frames=442 detections=271 processing_time=156.13s"}
+{"timestamp": "2026-08-21 13:56:29", "level": "INFO", "message": "Processing completed | job_id=4dd52bec0f34 processing_time=156.132s"}
+{"timestamp": "2026-08-21 14:14:55", "level": "INFO", "message": "Request started | request_id=req_9854e2f397ed method=GET path=/docs"}
+{"timestamp": "2026-08-21 14:14:55", "level": "INFO", "message": "Request completed | request_id=req_9854e2f397ed status_code=200 processing_time=0.005s"}
+{"timestamp": "2026-08-21 14:14:57", "level": "INFO", "message": "Request started | request_id=req_34c475f0768e method=GET path=/openapi.json"}
+{"timestamp": "2026-08-21 14:14:57", "level": "INFO", "message": "Request completed | request_id=req_34c475f0768e status_code=200 processing_time=0.042s"}
+{"timestamp": "2026-08-21 14:15:04", "level": "INFO", "message": "Request started | request_id=req_8d082edba59a method=GET path=/health"}
+{"timestamp": "2026-08-21 14:15:04", "level": "INFO", "message": "Request completed | request_id=req_8d082edba59a status_code=200 processing_time=0.003s"}
+2026-08-21 14:23:54,805 | INFO | ai_video_api | Request started | request_id=req_1686332a395a | method=GET | path=/health
+2026-08-21 14:23:54,820 | INFO | ai_video_api | Request completed | request_id=req_1686332a395a | status_code=200 | time=0.015s
+2026-08-21 14:24:56,612 | INFO | ai_video_api | Request started | request_id=req_8bafd4b3a90b | method=GET | path=/docs
+2026-08-21 14:24:56,617 | INFO | ai_video_api | Request completed | request_id=req_8bafd4b3a90b | status_code=200 | time=0.006s
+2026-08-21 14:24:57,879 | INFO | ai_video_api | Request started | request_id=req_b2e644dcbefd | method=GET | path=/openapi.json
+2026-08-21 14:24:57,911 | INFO | ai_video_api | Request completed | request_id=req_b2e644dcbefd | status_code=200 | time=0.032s
+2026-08-21 14:25:18,583 | INFO | ai_video_api | Request started | request_id=req_ae27d7aa02c5 | method=GET | path=/health
+2026-08-21 14:25:18,585 | INFO | ai_video_api | Request completed | request_id=req_ae27d7aa02c5 | status_code=200 | time=0.002s
